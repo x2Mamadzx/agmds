@@ -244,7 +244,7 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {[
-              { quote: "MDS a complètement transformé notre acquisition client. En 3 mois, nous avons dû engager du nouveau personnel pour gérer la demande générée par leurs campagnes.", author: "Roy Capital et Associés", role: "Firme d'investissement" },
+              { quote: "MDS a complètement transformé notre acquisition client. En 3 mois, nous avons dû engager du nouveau personnel pour gérer la demande générée par leurs campagnes.", author: "Roy Capital et Associés", role: "Cabinet financier" },
               { quote: "Leur approche vidéo organique a fait exploser notre visibilité. Nous avons généré plus de ventes avec une seule vidéo virale qu'en 2 ans de marketing traditionnel.", author: "Samuel Auclair", role: "Entrepreneur" },
             ].map((testimonial, i) => (
               <motion.div 
