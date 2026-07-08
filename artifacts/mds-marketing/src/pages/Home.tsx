@@ -669,115 +669,118 @@ function ContactForm({ onConverted }: { onConverted: () => void }) {
   }
 
   const inputClass = [
-    "w-full bg-white/5 border-b border-white/20 px-0 py-3",
-    "text-white placeholder:text-white/35 text-sm font-light",
+    "w-full bg-transparent border-b border-black/15 px-0 py-3",
+    "text-black placeholder:text-black/30 text-sm",
     "focus:outline-none focus:border-[#C8922A] transition-colors duration-300",
     "appearance-none",
   ].join(' ');
 
-  const labelClass = "block text-[10px] font-bold tracking-[0.2em] text-white/40 uppercase mb-1";
+  const labelClass = "block text-[10px] font-bold tracking-[0.22em] text-[#C8922A] uppercase mb-1";
 
   return (
     <motion.form
       onSubmit={handleSubmit}
-      className="relative bg-[#111111] rounded-2xl p-7 md:p-10 shadow-[0_32px_80px_rgba(0,0,0,0.35)] border border-white/8 overflow-hidden"
+      className="relative bg-white rounded-2xl shadow-[0_8px_48px_rgba(0,0,0,0.10)] overflow-hidden"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* Subtle gold glow top */}
-      <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-72 h-24 bg-[#C8922A]/20 blur-[60px] rounded-full pointer-events-none" />
+      {/* Gold accent bar top */}
+      <div className="h-1 w-full bg-gradient-to-r from-[#C8922A] via-[#F5C842] to-[#C8922A]" />
 
-      {/* Form header */}
-      <div className="mb-7 pb-6 border-b border-white/8">
-        <p className="text-[10px] tracking-[0.25em] text-[#C8922A] font-bold uppercase mb-1.5">Session stratégique gratuite</p>
-        <h3 className="text-xl md:text-2xl font-black text-white leading-tight">Réservez votre appel <span className="text-[#C8922A]">en 60 secondes</span></h3>
-      </div>
-
-      <div className="space-y-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div>
-            <label className={labelClass}>Votre nom *</label>
-            <input name="nom" required value={form.nom} onChange={handleChange} placeholder="Jean Tremblay" className={inputClass} />
-          </div>
-          <div>
-            <label className={labelClass}>Entreprise</label>
-            <input name="entreprise" autoComplete="organization" list="entreprises-suggestions" value={form.entreprise} onChange={handleChange} placeholder="Votre entreprise inc." className={inputClass} />
-            <datalist id="entreprises-suggestions">
-              {recentEntreprises.map(e => <option key={e} value={e} />)}
-            </datalist>
-          </div>
+      <div className="p-7 md:p-10">
+        {/* Form header */}
+        <div className="mb-8 pb-6 border-b border-black/6">
+          <p className="text-[10px] tracking-[0.25em] text-[#C8922A] font-bold uppercase mb-1.5">Session stratégique gratuite</p>
+          <h3 className="text-xl md:text-2xl font-black text-black leading-tight">
+            Réservez votre appel <span className="text-gradient-gold">en 60 secondes</span>
+          </h3>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div>
-            <label className={labelClass}>Courriel *</label>
-            <input name="courriel" type="email" required value={form.courriel} onChange={handleChange} placeholder="jean@entreprise.ca" className={inputClass} />
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+            <div>
+              <label className={labelClass}>Votre nom *</label>
+              <input name="nom" required value={form.nom} onChange={handleChange} placeholder="Jean Tremblay" className={inputClass} />
+            </div>
+            <div>
+              <label className={labelClass}>Entreprise</label>
+              <input name="entreprise" autoComplete="organization" list="entreprises-suggestions" value={form.entreprise} onChange={handleChange} placeholder="Votre entreprise inc." className={inputClass} />
+              <datalist id="entreprises-suggestions">
+                {recentEntreprises.map(e => <option key={e} value={e} />)}
+              </datalist>
+            </div>
           </div>
-          <div>
-            <label className={labelClass}>Téléphone *</label>
-            <input name="telephone" type="tel" required value={form.telephone} onChange={handleChange} placeholder="418-000-0000" className={inputClass} />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+            <div>
+              <label className={labelClass}>Courriel *</label>
+              <input name="courriel" type="email" required value={form.courriel} onChange={handleChange} placeholder="jean@entreprise.ca" className={inputClass} />
+            </div>
+            <div>
+              <label className={labelClass}>Téléphone *</label>
+              <input name="telephone" type="tel" required value={form.telephone} onChange={handleChange} placeholder="418-000-0000" className={inputClass} />
+            </div>
           </div>
-        </div>
 
-        <div>
-          <label className={labelClass}>Service qui vous intéresse *</label>
-          <select name="service" required value={form.service} onChange={handleChange}
-            className={inputClass + ' cursor-pointer bg-transparent'}
-            style={{ colorScheme: 'dark' }}
-          >
-            <option value="" disabled className="bg-[#111111] text-white/50">Choisissez un service</option>
-            <option value="videos" className="bg-[#111111] text-white">Vidéos organiques</option>
-            <option value="pub" className="bg-[#111111] text-white">Campagnes publicitaires (Meta / Google / TikTok)</option>
-            <option value="reseaux" className="bg-[#111111] text-white">Gestion des réseaux sociaux</option>
-            <option value="contenu" className="bg-[#111111] text-white">Création de contenu</option>
-            <option value="strategie" className="bg-[#111111] text-white">Stratégie de marque</option>
-            <option value="tout" className="bg-[#111111] text-white">Tout — je veux une stratégie complète</option>
-          </select>
-        </div>
-
-        <div>
-          <label className={labelClass}>Parlez-nous de votre projet</label>
-          <textarea name="message" value={form.message} onChange={handleChange} rows={3}
-            placeholder="Vos objectifs, budget approximatif, défis actuels..."
-            className={inputClass + ' resize-none'} />
-        </div>
-
-        <div className="pt-2 space-y-3">
-          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-            <Button
-              type="submit"
-              size="lg"
-              className="w-full h-13 md:h-14 text-sm font-bold uppercase tracking-widest bg-gradient-to-r from-[#C8922A] to-[#F5C842] text-black hover:opacity-90 shadow-[0_0_40px_rgba(200,146,42,0.35)] hover:shadow-[0_0_60px_rgba(200,146,42,0.55)] transition-all duration-500 border-0"
-              disabled={loading}
+          <div>
+            <label className={labelClass}>Service qui vous intéresse *</label>
+            <select name="service" required value={form.service} onChange={handleChange}
+              className={inputClass + ' cursor-pointer bg-white'}
             >
-              {loading ? (
-                <motion.span animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 1, repeat: Infinity }}>
-                  Envoi en cours...
-                </motion.span>
-              ) : (
-                <span className="flex items-center justify-center gap-2">
-                  Réserver mon appel gratuit
-                  <ArrowRight className="w-4 h-4" />
-                </span>
-              )}
-            </Button>
-          </motion.div>
+              <option value="" disabled>Choisissez un service</option>
+              <option value="videos">Vidéos organiques</option>
+              <option value="pub">Campagnes publicitaires (Meta / Google / TikTok)</option>
+              <option value="reseaux">Gestion des réseaux sociaux</option>
+              <option value="contenu">Création de contenu</option>
+              <option value="strategie">Stratégie de marque</option>
+              <option value="tout">Tout — je veux une stratégie complète</option>
+            </select>
+          </div>
 
-          {/* Consent notice */}
-          <p className="text-[11px] text-white/30 text-center leading-relaxed">
-            En soumettant ce formulaire, vous acceptez notre{' '}
-            <a href="/politique-de-confidentialite" target="_blank" rel="noopener noreferrer"
-              className="text-white/50 underline underline-offset-2 hover:text-[#C8922A] transition-colors duration-200">
-              politique de confidentialité
-            </a>{' '}
-            et consentez à être contacté par MDS Marketing.
-          </p>
+          <div>
+            <label className={labelClass}>Parlez-nous de votre projet</label>
+            <textarea name="message" value={form.message} onChange={handleChange} rows={3}
+              placeholder="Vos objectifs, budget approximatif, défis actuels..."
+              className={inputClass + ' resize-none'} />
+          </div>
 
-          {createLead.isError && (
-            <p className="text-sm text-red-400 text-center">Une erreur est survenue. Veuillez réessayer.</p>
-          )}
+          <div className="pt-2 space-y-3">
+            <motion.div whileHover={{ scale: 1.015 }} whileTap={{ scale: 0.985 }}>
+              <Button
+                type="submit"
+                size="lg"
+                className="w-full h-12 md:h-14 text-sm font-bold uppercase tracking-widest shadow-[0_0_30px_rgba(200,146,42,0.2)] hover:shadow-[0_0_50px_rgba(200,146,42,0.4)] transition-shadow duration-500"
+                disabled={loading}
+              >
+                {loading ? (
+                  <motion.span animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 1, repeat: Infinity }}>
+                    Envoi en cours...
+                  </motion.span>
+                ) : (
+                  <span className="flex items-center justify-center gap-2">
+                    Réserver mon appel gratuit
+                    <ArrowRight className="w-4 h-4" />
+                  </span>
+                )}
+              </Button>
+            </motion.div>
+
+            {/* Consent notice */}
+            <p className="text-[11px] text-black/35 text-center leading-relaxed">
+              En soumettant, vous acceptez notre{' '}
+              <a href="/politique-de-confidentialite" target="_blank" rel="noopener noreferrer"
+                className="text-black/50 underline underline-offset-2 hover:text-[#C8922A] transition-colors duration-200">
+                politique de confidentialité
+              </a>{' '}
+              et consentez à être contacté par MDS Marketing.
+            </p>
+
+            {createLead.isError && (
+              <p className="text-sm text-red-400 text-center">Une erreur est survenue. Veuillez réessayer.</p>
+            )}
+          </div>
         </div>
       </div>
     </motion.form>
