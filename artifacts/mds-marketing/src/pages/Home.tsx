@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import heroImage from '@assets/generated_images/hero-boardroom.jpg';
 import servicesImage from '@assets/generated_images/services-content.jpg';
-import dataImage from '@assets/generated_images/studio-production-mds.jpg';
+import dataImage from '@assets/generated_images/studio-production-natural.jpg';
 
 const FADE_UP = {
   hidden: { opacity: 0, y: 30 },
