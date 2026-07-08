@@ -51,7 +51,7 @@ export function Footer() {
           <div>
             <h4 className="font-display font-semibold text-lg mb-6 uppercase tracking-wider">Contact</h4>
             <ul className="space-y-4 text-white/60">
-              <li>Montréal, Québec</li>
+              <li>Québec, Canada</li>
               <li>
                 <a href="tel:4183139250" className="hover:text-primary transition-colors">
                   418 313-9250
