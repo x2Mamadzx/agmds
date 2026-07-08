@@ -570,8 +570,8 @@ export default function Home() {
             <motion.div variants={FADE_UP} className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 md:mb-12">
               {[
                 { title: 'Diagnostic sans détour.', desc: "On analyse votre situation réelle en 15 minutes et on identifie précisément où se cachent vos opportunités de croissance." },
-                { title: "Un plan d'action, pas un PowerPoint.", desc: "Vous repartez avec des actions concrètes à exécuter dès le lendemain — pas des recommandations vagues." },
-                { title: "L'honnêteté avant tout.", desc: "Si votre entreprise n'est pas le bon profil pour nos services, on vous le dit clairement. Pas de vente à tout prix." },
+                { title: "Exécution immédiate.", desc: "Pas de délai, pas de bureaucratie. On démarre dès le lendemain avec une stratégie calibrée à votre marché." },
+                { title: "Résultats mesurables.", desc: "Chaque action est tracée, analysée et optimisée. Vous voyez exactement ce que vos investissements rapportent." },
               ].map((item, i) => (
                 <div key={i} className="flex gap-3">
                   <CheckCircle2 className="text-primary w-5 h-5 mt-0.5 shrink-0" />
