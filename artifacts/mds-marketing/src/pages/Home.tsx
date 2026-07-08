@@ -328,8 +328,7 @@ export default function Home() {
                   variants={{ hidden: { y: '100%' }, visible: { y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } }}
                   className="text-4xl md:text-5xl font-bold"
                 >
-                  Notre approche <br />
-                  <span className="text-primary text-2xl font-normal tracking-widest uppercase mt-4 block">0 bullshit</span>
+                  Notre approche
                 </motion.h2>
               </div>
               <div className="space-y-10">
