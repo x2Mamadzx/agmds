@@ -46,7 +46,7 @@ export function Navbar() {
             alt="MDS Marketing Logo"
             className="h-12 md:h-14 w-auto rounded-lg object-cover transition-transform duration-300 group-hover:scale-105"
           />
-          <span className="hidden sm:block text-lg md:text-xl font-black tracking-tight text-black">
+          <span className="text-sm sm:text-lg md:text-xl font-black tracking-tight text-black whitespace-nowrap">
             MDS Marketing
           </span>
         </Link>
