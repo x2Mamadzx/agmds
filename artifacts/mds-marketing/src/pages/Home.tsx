@@ -561,8 +561,8 @@ export default function Home() {
               </motion.p>
             </motion.div>
 
-            {/* ── Form (plus petit, centré) ── */}
-            <motion.div variants={FADE_UP} className="max-w-2xl mx-auto mb-10 md:mb-12">
+            {/* ── Form (large, centré) ── */}
+            <motion.div variants={FADE_UP} className="max-w-4xl mx-auto mb-10 md:mb-12">
               <ContactForm onConverted={markConverted} />
             </motion.div>
 
@@ -591,7 +591,7 @@ export default function Home() {
                   <span className="w-2 h-2 rounded-full bg-[#C8922A] animate-pulse" />
                   <span className="text-[10px] font-bold tracking-[0.25em] text-[#C8922A] uppercase">Résultats en direct — 7 derniers jours</span>
                 </div>
-                <span className="text-[10px] text-black/30 font-mono">Client potentiel · Secteur PME</span>
+                <span className="text-[10px] text-black/30 font-mono">Secteur PME</span>
               </div>
 
               {/* ticker */}
@@ -610,7 +610,7 @@ export default function Home() {
                         { val: '1.2M', label: 'portée totale', trend: '↑ 187%' },
                         { val: '68', label: 'messages reçus', trend: '↑ 5x' },
                         { val: '9 340', label: "j'aime & partages", trend: '↑ 94%' },
-                        { val: '3', label: 'soumissions envoyées', trend: 'nouveau' },
+                        { val: '22', label: 'prospects convertis', trend: '↑ 8x' },
                         { val: '14%', label: "taux d'engagement", trend: '↑ 6pts' },
                         { val: 'Gratuit', label: 'depense pub', trend: '100% organique' },
                       ].map((stat, i) => (
@@ -734,17 +734,18 @@ function ContactForm({ onConverted }: { onConverted: () => void }) {
       {/* Gold accent bar top */}
       <div className="h-1 w-full bg-gradient-to-r from-[#C8922A] via-[#F5C842] to-[#C8922A]" />
 
-      <div className="p-7 md:p-10">
+      <div className="p-6 md:p-8">
         {/* Form header */}
-        <div className="mb-8 pb-6 border-b border-black/6">
-          <p className="text-[10px] tracking-[0.25em] text-[#C8922A] font-bold uppercase mb-1.5">Appel gratuit — 15 minutes</p>
-          <h3 className="text-xl md:text-2xl font-black text-black leading-tight">
+        <div className="mb-5 pb-5 border-b border-black/6 flex items-baseline gap-4">
+          <p className="text-[10px] tracking-[0.25em] text-[#C8922A] font-bold uppercase shrink-0">Appel gratuit — 15 min</p>
+          <h3 className="text-lg font-black text-black leading-tight">
             Remplissez. On vous rappelle. <span className="text-gradient-gold">Simple.</span>
           </h3>
         </div>
 
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+        <div className="space-y-5">
+          {/* Row 1 — 4 cols on lg */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-5">
             <div>
               <label className={labelClass}>Votre nom *</label>
               <input name="nom" required value={form.nom} onChange={handleChange} placeholder="Jean Tremblay" className={inputClass} />
@@ -756,9 +757,6 @@ function ContactForm({ onConverted }: { onConverted: () => void }) {
                 {recentEntreprises.map(e => <option key={e} value={e} />)}
               </datalist>
             </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
             <div>
               <label className={labelClass}>Courriel *</label>
               <input name="courriel" type="email" required value={form.courriel} onChange={handleChange} placeholder="jean@entreprise.ca" className={inputClass} />
@@ -769,26 +767,28 @@ function ContactForm({ onConverted }: { onConverted: () => void }) {
             </div>
           </div>
 
-          <div>
-            <label className={labelClass}>Service qui vous intéresse *</label>
-            <select name="service" required value={form.service} onChange={handleChange}
-              className={inputClass + ' cursor-pointer bg-white'}
-            >
-              <option value="" disabled>Choisissez un service</option>
-              <option value="videos">Vidéos organiques</option>
-              <option value="pub">Campagnes publicitaires (Meta / Google / TikTok)</option>
-              <option value="reseaux">Gestion des réseaux sociaux</option>
-              <option value="contenu">Création de contenu</option>
-              <option value="strategie">Stratégie de marque</option>
-              <option value="tout">Tout — je veux une stratégie complète</option>
-            </select>
-          </div>
-
-          <div>
-            <label className={labelClass}>Parlez-nous de votre projet</label>
-            <textarea name="message" value={form.message} onChange={handleChange} rows={3}
-              placeholder="Vos objectifs, budget approximatif, défis actuels..."
-              className={inputClass + ' resize-none'} />
+          {/* Row 2 — service + message côte à côte sur md+ */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+            <div>
+              <label className={labelClass}>Service qui vous intéresse *</label>
+              <select name="service" required value={form.service} onChange={handleChange}
+                className={inputClass + ' cursor-pointer bg-white'}
+              >
+                <option value="" disabled>Choisissez un service</option>
+                <option value="videos">Vidéos organiques</option>
+                <option value="pub">Campagnes pub (Meta / Google / TikTok)</option>
+                <option value="reseaux">Gestion des réseaux sociaux</option>
+                <option value="contenu">Création de contenu</option>
+                <option value="strategie">Stratégie de marque</option>
+                <option value="tout">Tout — stratégie complète</option>
+              </select>
+            </div>
+            <div>
+              <label className={labelClass}>Parlez-nous de votre projet</label>
+              <textarea name="message" value={form.message} onChange={handleChange} rows={2}
+                placeholder="Vos objectifs, budget approximatif, défis actuels..."
+                className={inputClass + ' resize-none'} />
+            </div>
           </div>
 
           <div className="pt-2 space-y-3">
