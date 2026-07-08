@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform, useSpring, useInView, animate } from '
 import { ArrowRight, BarChart3, Target, Zap, TrendingUp, Play, Camera, Users, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCreateLead } from '@workspace/api-client-react';
-import heroImage from '@assets/generated_images/hero-boardroom.jpg';
+import heroImage from '@assets/generated_images/hero-camera.jpg';
 import servicesImage from '@assets/generated_images/services-content.jpg';
 import dataImage from '@assets/generated_images/studio-production-natural.jpg';
 
