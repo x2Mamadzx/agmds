@@ -549,15 +549,13 @@ export default function Home() {
             {/* ── Titre ── */}
             <motion.div variants={FADE_UP} className="text-center mb-10 md:mb-14">
               <span className="text-xs font-bold tracking-[0.3em] text-primary uppercase mb-4 block">Maintenant ou jamais</span>
-              <div className="overflow-hidden">
-                <motion.h2
-                  variants={{ hidden: { y: '100%' }, visible: { y: 0, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } } }}
-                  className="text-4xl md:text-7xl font-black text-black leading-[0.9] mb-4 md:mb-6"
-                >
-                  DEVIENS LA RÉFÉRENCE <br />
-                  <span className="text-gradient-gold">DANS TON DOMAINE.</span>
-                </motion.h2>
-              </div>
+              <motion.h2
+                variants={FADE_UP}
+                className="text-4xl md:text-7xl font-black text-black leading-[0.9] mb-4 md:mb-6"
+              >
+                DEVIENS LA RÉFÉRENCE <br />
+                <span className="text-gradient-gold">DANS TON DOMAINE.</span>
+              </motion.h2>
               <motion.p variants={FADE_UP} className="text-base md:text-lg text-black/60 max-w-xl mx-auto">
                 Pendant que vous hésitez, vos concurrents avancent. Un appel suffit pour changer la trajectoire de votre entreprise.
               </motion.p>
@@ -585,48 +583,245 @@ export default function Home() {
               ))}
             </motion.div>
 
-            {/* ── Hologram Ticker ── */}
-            <motion.div
-              variants={FADE_UP}
-              className="relative mb-10 md:mb-14 rounded-xl overflow-hidden"
-              style={{ background: 'linear-gradient(135deg,#0c0c0c 0%,#111 50%,#0c0c0c 100%)' }}
-            >
-              {/* scanline grid overlay */}
-              <div className="absolute inset-0 opacity-[0.06] pointer-events-none"
-                style={{ backgroundImage: 'repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,255,255,0.3) 3px,rgba(255,255,255,0.3) 4px),repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(255,255,255,0.3) 3px,rgba(255,255,255,0.3) 4px)' }} />
-              {/* top gold line */}
-              <div className="h-px w-full bg-gradient-to-r from-transparent via-[#C8922A] to-transparent" />
+            {/* ── Hologram Ticker — 7 derniers jours ── */}
+            <motion.div variants={FADE_UP} className="relative rounded-xl overflow-hidden border border-[#C8922A]/20 bg-white shadow-[0_4px_32px_rgba(200,146,42,0.08)]">
+              {/* header bar */}
+              <div className="flex items-center justify-between px-5 py-3 border-b border-[#C8922A]/15 bg-[#fffdf8]">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#C8922A] animate-pulse" />
+                  <span className="text-[10px] font-bold tracking-[0.25em] text-[#C8922A] uppercase">Résultats en direct — 7 derniers jours</span>
+                </div>
+                <span className="text-[10px] text-black/30 font-mono">Client potentiel · Secteur PME</span>
+              </div>
 
-              <div className="py-5 overflow-hidden">
+              {/* ticker */}
+              <div className="py-4 overflow-hidden">
                 <motion.div
-                  className="flex gap-0 whitespace-nowrap"
+                  className="flex whitespace-nowrap"
                   animate={{ x: ['0%', '-50%'] }}
-                  transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
+                  transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
                 >
                   {[...Array(2)].map((_, copyIdx) => (
-                    <div key={copyIdx} className="flex items-center gap-0 shrink-0">
+                    <div key={copyIdx} className="flex items-center shrink-0">
                       {[
-                        { val: '+50k', label: 'vues organiques' },
-                        { val: '+22', label: 'prospects qualifiés' },
-                        { val: '+187%', label: 'de revenus' },
-                        { val: '+3M', label: 'impressions générées' },
-                        { val: '+400%', label: 'ROI moyen' },
-                        { val: '10+', label: 'clients actifs' },
-                        { val: '+68%', label: "taux d'engagement" },
-                        { val: '24h', label: 'délai de réponse' },
-                        { val: '+120k', label: 'abonnés cumulés' },
-                        { val: '98%', label: 'clients satisfaits' },
+                        { val: '54 821', label: 'vues organiques', trend: '↑ 312%' },
+                        { val: '22', label: 'prospects qualifiés', trend: '↑ 8x' },
+                        { val: '4 107', label: 'clics sur le profil', trend: '↑ 204%' },
+                        { val: '1.2M', label: 'portée totale', trend: '↑ 187%' },
+                        { val: '68', label: 'messages reçus', trend: '↑ 5x' },
+                        { val: '9 340', label: "j'aime & partages", trend: '↑ 94%' },
+                        { val: '3', label: 'soumissions envoyées', trend: 'nouveau' },
+                        { val: '14%', label: "taux d'engagement", trend: '↑ 6pts' },
+                        { val: '0 
+
+          </motion.div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+/* ─── Contact Form ─────────────────────────────────────────────── */
+const ENTREPRISES_STORAGE_KEY = 'mds_recent_entreprises';
+
+function ContactForm({ onConverted }: { onConverted: () => void }) {
+  const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState({ nom: '', entreprise: '', courriel: '', telephone: '', service: '', message: '' });
+  const [recentEntreprises, setRecentEntreprises] = useState<string[]>([]);
+  const createLead = useCreateLead();
+
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem(ENTREPRISES_STORAGE_KEY) ?? '[]');
+      if (Array.isArray(stored)) setRecentEntreprises(stored);
+    } catch {
+      // ignore malformed storage
+    }
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    createLead.mutate(
+      {
+        data: {
+          nom: form.nom,
+          entreprise: form.entreprise || undefined,
+          courriel: form.courriel,
+          telephone: form.telephone,
+          service: form.service,
+          message: form.message || undefined,
+        },
+      },
+      {
+        onSuccess: () => {
+          setSubmitted(true);
+          onConverted();
+          if (form.entreprise.trim()) {
+            const updated = [form.entreprise.trim(), ...recentEntreprises.filter(e => e !== form.entreprise.trim())].slice(0, 10);
+            localStorage.setItem(ENTREPRISES_STORAGE_KEY, JSON.stringify(updated));
+          }
+        },
+      },
+    );
+  };
+
+  const loading = createLead.isPending;
+
+  if (submitted) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+        className="bg-card border border-black/10 rounded-2xl p-10 text-center"
+      >
+        <motion.div
+          animate={{ scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+        >
+          <CheckCircle2 className="text-primary w-16 h-16 mx-auto mb-6" />
+        </motion.div>
+        <h3 className="text-2xl font-black text-black mb-3">Message envoyé !</h3>
+        <p className="text-black/55">Notre équipe vous contactera dans les prochaines 24 heures pour confirmer votre appel stratégique.</p>
+      </motion.div>
+    );
+  }
+
+  const inputClass = [
+    "w-full bg-transparent border-b border-black/15 px-0 py-3",
+    "text-black placeholder:text-black/30 text-sm",
+    "focus:outline-none focus:border-[#C8922A] transition-colors duration-300",
+    "appearance-none",
+  ].join(' ');
+
+  const labelClass = "block text-[10px] font-bold tracking-[0.22em] text-[#C8922A] uppercase mb-1";
+
+  return (
+    <motion.form
+      onSubmit={handleSubmit}
+      className="relative bg-white rounded-2xl shadow-[0_8px_48px_rgba(0,0,0,0.10)] overflow-hidden"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {/* Gold accent bar top */}
+      <div className="h-1 w-full bg-gradient-to-r from-[#C8922A] via-[#F5C842] to-[#C8922A]" />
+
+      <div className="p-7 md:p-10">
+        {/* Form header */}
+        <div className="mb-8 pb-6 border-b border-black/6">
+          <p className="text-[10px] tracking-[0.25em] text-[#C8922A] font-bold uppercase mb-1.5">Appel gratuit — 15 minutes</p>
+          <h3 className="text-xl md:text-2xl font-black text-black leading-tight">
+            Remplissez. On vous rappelle. <span className="text-gradient-gold">Simple.</span>
+          </h3>
+        </div>
+
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+            <div>
+              <label className={labelClass}>Votre nom *</label>
+              <input name="nom" required value={form.nom} onChange={handleChange} placeholder="Jean Tremblay" className={inputClass} />
+            </div>
+            <div>
+              <label className={labelClass}>Entreprise</label>
+              <input name="entreprise" autoComplete="organization" list="entreprises-suggestions" value={form.entreprise} onChange={handleChange} placeholder="Votre entreprise inc." className={inputClass} />
+              <datalist id="entreprises-suggestions">
+                {recentEntreprises.map(e => <option key={e} value={e} />)}
+              </datalist>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+            <div>
+              <label className={labelClass}>Courriel *</label>
+              <input name="courriel" type="email" required value={form.courriel} onChange={handleChange} placeholder="jean@entreprise.ca" className={inputClass} />
+            </div>
+            <div>
+              <label className={labelClass}>Téléphone *</label>
+              <input name="telephone" type="tel" required value={form.telephone} onChange={handleChange} placeholder="418-000-0000" className={inputClass} />
+            </div>
+          </div>
+
+          <div>
+            <label className={labelClass}>Service qui vous intéresse *</label>
+            <select name="service" required value={form.service} onChange={handleChange}
+              className={inputClass + ' cursor-pointer bg-white'}
+            >
+              <option value="" disabled>Choisissez un service</option>
+              <option value="videos">Vidéos organiques</option>
+              <option value="pub">Campagnes publicitaires (Meta / Google / TikTok)</option>
+              <option value="reseaux">Gestion des réseaux sociaux</option>
+              <option value="contenu">Création de contenu</option>
+              <option value="strategie">Stratégie de marque</option>
+              <option value="tout">Tout — je veux une stratégie complète</option>
+            </select>
+          </div>
+
+          <div>
+            <label className={labelClass}>Parlez-nous de votre projet</label>
+            <textarea name="message" value={form.message} onChange={handleChange} rows={3}
+              placeholder="Vos objectifs, budget approximatif, défis actuels..."
+              className={inputClass + ' resize-none'} />
+          </div>
+
+          <div className="pt-2 space-y-3">
+            <motion.div whileHover={{ scale: 1.015 }} whileTap={{ scale: 0.985 }}>
+              <Button
+                type="submit"
+                size="lg"
+                className="w-full h-12 md:h-14 text-sm font-bold uppercase tracking-widest shadow-[0_0_30px_rgba(200,146,42,0.2)] hover:shadow-[0_0_50px_rgba(200,146,42,0.4)] transition-shadow duration-500"
+                disabled={loading}
+              >
+                {loading ? (
+                  <motion.span animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 1, repeat: Infinity }}>
+                    Envoi en cours...
+                  </motion.span>
+                ) : (
+                  <span className="flex items-center justify-center gap-2">
+                    Réserver mon appel gratuit
+                    <ArrowRight className="w-4 h-4" />
+                  </span>
+                )}
+              </Button>
+            </motion.div>
+
+            {/* Consent notice */}
+            <p className="text-[11px] text-black/35 text-center leading-relaxed">
+              En soumettant, vous acceptez notre{' '}
+              <a href="/politique-de-confidentialite" target="_blank" rel="noopener noreferrer"
+                className="text-black/50 underline underline-offset-2 hover:text-[#C8922A] transition-colors duration-200">
+                politique de confidentialité
+              </a>{' '}
+              et consentez à être contacté par MDS Marketing.
+            </p>
+
+            {createLead.isError && (
+              <p className="text-sm text-red-400 text-center">Une erreur est survenue. Veuillez réessayer.</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </motion.form>
+  );
+}
+, label: 'dépense pub', trend: '100% organique' },
                       ].map((stat, i) => (
                         <React.Fragment key={i}>
-                          <div className="inline-flex items-center gap-3 px-7 py-1">
-                            <span className="text-xl md:text-2xl font-black text-[#F5C842] tracking-tight drop-shadow-[0_0_10px_rgba(245,200,66,0.7)]">
+                          <div className="inline-flex items-center gap-2.5 px-6 py-1">
+                            <span className="text-lg md:text-xl font-black text-[#C8922A] tracking-tight">
                               {stat.val}
                             </span>
-                            <span className="text-xs md:text-sm text-white/50 uppercase tracking-widest font-medium">
-                              {stat.label}
-                            </span>
+                            <div className="flex flex-col leading-none">
+                              <span className="text-[10px] text-black/40 uppercase tracking-widest">{stat.label}</span>
+                              <span className="text-[10px] font-bold text-[#C8922A]/70">{stat.trend}</span>
+                            </div>
                           </div>
-                          <span className="text-[#C8922A]/40 text-lg select-none">◆</span>
+                          <span className="text-[#C8922A]/25 text-sm select-none">|</span>
                         </React.Fragment>
                       ))}
                     </div>
@@ -634,11 +829,9 @@ export default function Home() {
                 </motion.div>
               </div>
 
-              {/* bottom gold line */}
-              <div className="h-px w-full bg-gradient-to-r from-transparent via-[#C8922A] to-transparent" />
               {/* left/right fade masks */}
-              <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#0c0c0c] to-transparent pointer-events-none" />
-              <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[#0c0c0c] to-transparent pointer-events-none" />
+              <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-white to-transparent pointer-events-none" />
+              <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-white to-transparent pointer-events-none" />
             </motion.div>
 
           </motion.div>
