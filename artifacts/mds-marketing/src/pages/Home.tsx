@@ -568,9 +568,9 @@ export default function Home() {
               </motion.div>
               <motion.div variants={FADE_UP} className="lg:col-span-2 space-y-6 pt-2">
                 {[
-                  { title: 'Appel de 30 minutes', desc: 'On analyse votre situation actuelle et on identifie les opportunités immédiates.' },
+                  { title: 'Appel de 15 minutes', desc: 'On analyse votre situation actuelle et on identifie les opportunités immédiates.' },
                   { title: 'Stratégie sur mesure', desc: "Vous repartez avec un plan d'action concret, adapté à votre marché québécois." },
-                  { title: 'Zéro engagement', desc: "Pas de pression. Si on n'est pas le bon fit, on vous le dira honnêtement." },
+                  { title: 'Zéro engagement', desc: "Pas de pression, juste un appel pour discuter de votre projet." },
                 ].map((item, i) => (
                   <motion.div
                     key={item.title}
