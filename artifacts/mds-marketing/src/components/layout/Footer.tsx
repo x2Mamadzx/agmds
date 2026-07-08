@@ -22,16 +22,16 @@ export function Footer() {
               L'agence des entreprises québécoises qui refusent le statu quo. Nous transformons l'attention en revenus.
             </p>
             <div className="flex gap-4">
-              <a href="https://www.facebook.com/profile.php?id=61575313071488" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all text-black">
+              <a href="https://www.facebook.com/profile.php?id=61575313071488" target="_blank" rel="noopener noreferrer" aria-label="MDS Marketing sur Facebook" className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all text-black">
                 <Facebook size={20} />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all text-black">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="MDS Marketing sur LinkedIn" className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all text-black">
                 <Linkedin size={20} />
               </a>
-              <a href="mailto:info@agmds.com" className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all text-black">
+              <a href="mailto:info@agmds.com" aria-label="Envoyer un courriel à MDS Marketing" className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all text-black">
                 <Mail size={20} />
               </a>
-              <a href="tel:4183139250" className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all text-black">
+              <a href="tel:4183139250" aria-label="Appeler MDS Marketing" className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all text-black">
                 <Phone size={20} />
               </a>
             </div>

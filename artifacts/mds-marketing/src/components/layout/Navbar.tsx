@@ -88,6 +88,9 @@ export function Navbar() {
             className="text-black p-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             whileTap={{ scale: 0.9 }}
+            aria-label={mobileMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
           >
             <AnimatePresence mode="wait">
               {mobileMenuOpen ? (
@@ -113,6 +116,7 @@ export function Navbar() {
             exit={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="md:hidden bg-[#f2f2f2] border-b border-black/10 overflow-hidden"
+            id="mobile-menu"
           >
             <div className="flex flex-col px-6 py-8 space-y-2">
               {navLinks.map((link, i) => (
