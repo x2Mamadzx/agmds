@@ -157,7 +157,7 @@ export default function Home() {
       <div className="noise-bg" />
 
       {/* ── 1. HERO ─────────────────────────────────────────────── */}
-      <section ref={heroRef} className="relative min-h-[100dvh] flex items-center justify-center pt-20 overflow-hidden">
+      <section ref={heroRef} className="relative min-h-[100dvh] flex items-center justify-center pt-28 md:pt-32 overflow-hidden">
         <motion.div className="absolute inset-0 z-0" style={{ y: smoothY, scale: heroScale }}>
           <img src={heroImage} alt="Boardroom" className="w-full h-full object-cover opacity-35" />
           <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/70 to-background" />
