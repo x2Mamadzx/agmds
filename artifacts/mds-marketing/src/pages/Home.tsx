@@ -563,20 +563,31 @@ export default function Home() {
 
             {/* ── Form (large, centré) ── */}
             <motion.div variants={FADE_UP} className="max-w-4xl mx-auto mb-10 md:mb-12">
-              {/* Circulating gold border — only the 2px outline moves */}
-              <div className="relative p-[2px] rounded-2xl overflow-hidden">
-                {/* Rotating conic gradient: 200% so corners stay covered during spin */}
+              {/* Circulating gold light border */}
+              <div className="relative rounded-2xl">
+                {/* Glow layer — blurs outside the clip so the light bleeds */}
                 <motion.div
                   className="absolute w-[200%] h-[200%] -top-1/2 -left-1/2"
                   style={{
-                    background: 'conic-gradient(from 0deg at 50% 50%, transparent 0deg, transparent 310deg, #C8922A 335deg, #F5C842 350deg, #C8922A 360deg)',
+                    background: 'conic-gradient(from 0deg at 50% 50%, transparent 0deg, transparent 305deg, rgba(200,146,42,0.4) 330deg, rgba(245,200,66,0.9) 348deg, rgba(200,146,42,0.4) 360deg)',
+                    filter: 'blur(10px)',
                   }}
                   animate={{ rotate: 360 }}
                   transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
                 />
-                {/* White mask covers the center — only the 2px border ring is visible */}
-                <div className="relative rounded-[14px] overflow-hidden bg-white">
-                  <ContactForm onConverted={markConverted} />
+                {/* Hard border — clipped, same rotation stays in sync */}
+                <div className="relative p-[2px] rounded-2xl overflow-hidden">
+                  <motion.div
+                    className="absolute w-[200%] h-[200%] -top-1/2 -left-1/2"
+                    style={{
+                      background: 'conic-gradient(from 0deg at 50% 50%, transparent 0deg, transparent 310deg, #C8922A 335deg, #F5C842 350deg, #C8922A 360deg)',
+                    }}
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+                  />
+                  <div className="relative rounded-[14px] overflow-hidden bg-white">
+                    <ContactForm onConverted={markConverted} />
+                  </div>
                 </div>
               </div>
             </motion.div>
