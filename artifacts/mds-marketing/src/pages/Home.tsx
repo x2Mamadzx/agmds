@@ -7,19 +7,23 @@ import servicesImage from '@assets/generated_images/services-content.jpg';
 import dataImage from '@assets/generated_images/studio-production-natural.jpg';
 
 /* ─── Animated Counter ─────────────────────────────────────────── */
-function Counter({ to, prefix = '', suffix = '' }: { to: number; prefix?: string; suffix?: string }) {
+function Counter({ to, from = 0, prefix = '', suffix = '', format }: { to: number; from?: number; prefix?: string; suffix?: string; format?: (v: number) => string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true });
   useEffect(() => {
     if (!inView || !ref.current) return;
-    const controls = animate(0, to, {
+    const controls = animate(from, to, {
       duration: 2,
       ease: [0.16, 1, 0.3, 1],
-      onUpdate: (v) => { if (ref.current) ref.current.textContent = prefix + Math.round(v).toLocaleString('fr-CA') + suffix; },
+      onUpdate: (v) => {
+        if (!ref.current) return;
+        const display = format ? format(v) : Math.round(v).toLocaleString('fr-CA');
+        ref.current.textContent = prefix + display + suffix;
+      },
     });
     return controls.stop;
-  }, [inView, to, prefix, suffix]);
-  return <span ref={ref}>{prefix}0{suffix}</span>;
+  }, [inView, to, from, prefix, suffix, format]);
+  return <span ref={ref}>{prefix}{format ? format(from) : from}{suffix}</span>;
 }
 
 /* ─── Clip-path reveal variant ─────────────────────────────────── */
@@ -39,7 +43,6 @@ const FADE_UP = {
 };
 
 const STAGGER = { visible: { transition: { staggerChildren: 0.12 } } };
-const STAGGER_FAST = { visible: { transition: { staggerChildren: 0.07 } } };
 
 /* ─── 3D Tilt Card ─────────────────────────────────────────────── */
 function TiltCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
@@ -155,7 +158,6 @@ export default function Home() {
 
       {/* ── 2. HOOK ─────────────────────────────────────────────── */}
       <section className="py-36 relative border-t border-white/5 bg-[#080808] overflow-hidden">
-        {/* Ambient glow */}
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-primary/8 rounded-full blur-[120px] pointer-events-none" />
 
         <div className="container px-6 mx-auto">
@@ -205,10 +207,7 @@ export default function Home() {
               </motion.div>
             </div>
 
-            <motion.div
-              variants={FADE_UP}
-              className="relative"
-            >
+            <motion.div variants={FADE_UP} className="relative">
               <motion.div
                 animate={{ scale: [1, 1.15, 1], opacity: [0.08, 0.15, 0.08] }}
                 transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
@@ -339,11 +338,7 @@ export default function Home() {
                   { num: '02', title: 'Production Créative', desc: "Notre équipe tourne, monte et rédige un contenu de calibre supérieur qui force l'attention." },
                   { num: '03', title: 'Distribution & Scaling', desc: 'Nous lançons les campagnes. Nous analysons la data en temps réel. Nous injectons du budget là où le ROI explose.' },
                 ].map((step, i) => (
-                  <motion.div
-                    key={i}
-                    variants={FADE_UP}
-                    className="flex gap-6 group"
-                  >
+                  <motion.div key={i} variants={FADE_UP} className="flex gap-6 group">
                     <motion.div
                       className="font-display text-5xl font-black text-white/8 group-hover:text-primary/20 transition-colors duration-500 min-w-[3rem]"
                       whileHover={{ scale: 1.1 }}
@@ -433,9 +428,9 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { prefix: '+', to: 1000000, suffix: '', label: 'de vues', sub: 'générées en 2025', unit: 'M' },
-              { prefix: '+', to: 900, suffix: '', label: 'prospects', sub: 'ultra qualifiés générés', unit: '' },
-              { prefix: '', to: 14, suffix: '$', label: 'coût / prospect', sub: 'coût moyen par prospect', unit: '' },
+              { prefix: '+', to: 1000000, from: 0, suffix: '', label: 'de vues', sub: 'générées en 2025', format: (v: number) => (v / 1000000).toFixed(v >= 999999 ? 0 : 1) + 'M' },
+              { prefix: '+', to: 1200, from: 0, suffix: '', label: 'prospects', sub: 'ultra qualifiés générés' },
+              { prefix: '', to: 14, from: 150, suffix: '$', label: 'coût / prospect', sub: 'coût moyen par prospect' },
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -452,8 +447,7 @@ export default function Home() {
                   <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
                   <div className="relative z-10">
                     <div className="text-6xl md:text-7xl font-black text-gradient-gold mb-3 leading-none tabular-nums">
-                      {item.prefix}
-                      {i === 0 ? '1M' : <Counter to={item.to} prefix="" suffix={item.suffix} />}
+                      <Counter to={item.to} from={item.from} prefix={item.prefix} suffix={item.suffix} format={item.format} />
                     </div>
                     <div className="text-xl font-bold text-white mb-1">{item.label}</div>
                     <div className="text-sm text-white/45">{item.sub}</div>
