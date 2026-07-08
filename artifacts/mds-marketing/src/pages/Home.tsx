@@ -563,6 +563,28 @@ export default function Home() {
               </motion.p>
             </motion.div>
 
+            {/* ── Form (plus petit, centré) ── */}
+            <motion.div variants={FADE_UP} className="max-w-2xl mx-auto mb-10 md:mb-12">
+              <ContactForm onConverted={markConverted} />
+            </motion.div>
+
+            {/* ── Bullets row ── */}
+            <motion.div variants={FADE_UP} className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 md:mb-12">
+              {[
+                { title: 'Un appel direct, sans détour.', desc: 'On identifie vos opportunités immédiates et on trace le plan ensemble.' },
+                { title: 'Résultats concrets dès le lendemain', desc: 'Vous repartez avec des actions précises à exécuter — pas des PowerPoints vides.' },
+                { title: 'Zéro engagement, 100% valeur', desc: "On livre de la valeur avant même de travailler ensemble. Si on n'est pas le bon fit, on vous le dit." },
+              ].map((item, i) => (
+                <div key={i} className="flex gap-3">
+                  <CheckCircle2 className="text-primary w-5 h-5 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="font-bold text-black text-sm mb-1">{item.title}</div>
+                    <div className="text-xs text-black/55 leading-relaxed">{item.desc}</div>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+
             {/* ── Hologram Ticker ── */}
             <motion.div
               variants={FADE_UP}
@@ -619,27 +641,6 @@ export default function Home() {
               <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[#0c0c0c] to-transparent pointer-events-none" />
             </motion.div>
 
-            {/* ── Bullets row ── */}
-            <motion.div variants={FADE_UP} className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 md:mb-12">
-              {[
-                { title: 'Un appel direct, sans détour.', desc: 'On identifie vos opportunités immédiates et on trace le plan ensemble.' },
-                { title: 'Résultats concrets dès le lendemain', desc: 'Vous repartez avec des actions précises à exécuter — pas des PowerPoints vides.' },
-                { title: 'Zéro engagement, 100% valeur', desc: "On livre de la valeur avant même de travailler ensemble. Si on n'est pas le bon fit, on vous le dit." },
-              ].map((item, i) => (
-                <div key={i} className="flex gap-3">
-                  <CheckCircle2 className="text-primary w-5 h-5 mt-0.5 shrink-0" />
-                  <div>
-                    <div className="font-bold text-black text-sm mb-1">{item.title}</div>
-                    <div className="text-xs text-black/55 leading-relaxed">{item.desc}</div>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-
-            {/* ── Form (plus petit, centré) ── */}
-            <motion.div variants={FADE_UP} className="max-w-2xl mx-auto">
-              <ContactForm onConverted={markConverted} />
-            </motion.div>
           </motion.div>
         </div>
       </section>
