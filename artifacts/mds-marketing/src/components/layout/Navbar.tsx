@@ -35,9 +35,9 @@ export function Navbar() {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled ? 'bg-background/90 backdrop-blur-xl border-b border-black/5 py-4' : 'bg-transparent py-6'
       }`}
-      initial={{ y: -100, opacity: 0 }}
+      initial={false}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group">
@@ -63,7 +63,7 @@ export function Navbar() {
           <Button
             onClick={() => scrollTo('contact')}
             variant="default"
-            className="uppercase tracking-widest text-xs relative overflow-hidden group"
+            className="btn-shine uppercase tracking-widest text-xs relative overflow-hidden group"
           >
             <span className="relative z-10">Démarrer</span>
             <span className="absolute inset-0 bg-gradient-to-r from-[#F5C842] to-[#C8922A] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
