@@ -601,7 +601,7 @@ function ContactForm() {
   return (
     <motion.form
       onSubmit={handleSubmit}
-      className="bg-[#e9e9e9] border border-black/15 rounded-2xl p-8 space-y-5 shadow-[0_0_80px_rgba(200,146,42,0.07)]"
+      className="gold-border-premium bg-[#e9e9e9] rounded-2xl p-8 space-y-5 shadow-[0_0_80px_rgba(200,146,42,0.07)]"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
