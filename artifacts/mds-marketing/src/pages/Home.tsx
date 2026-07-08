@@ -428,7 +428,7 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { prefix: '+', to: 1000000, from: 0, suffix: '', label: 'de vues', sub: 'générées en 2025', format: (v: number) => (v / 1000000).toFixed(v >= 999999 ? 0 : 1) + 'M' },
+              { prefix: '+', to: 1000000, from: 0, suffix: '', label: 'de vues', sub: 'générées en 2026', format: (v: number) => (v / 1000000).toFixed(v >= 999999 ? 0 : 1) + 'M' },
               { prefix: '+', to: 1200, from: 0, suffix: '', label: 'prospects', sub: 'ultra qualifiés générés' },
               { prefix: '', to: 14, from: 150, suffix: '$', label: 'coût / prospect', sub: 'coût moyen par prospect' },
             ].map((item, i) => (
