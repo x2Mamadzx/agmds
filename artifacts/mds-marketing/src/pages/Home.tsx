@@ -563,18 +563,19 @@ export default function Home() {
 
             {/* ── Form (large, centré) ── */}
             <motion.div variants={FADE_UP} className="max-w-4xl mx-auto mb-10 md:mb-12">
-              {/* Circulating gold border glow */}
-              <div className="relative p-[2px] rounded-2xl">
+              {/* Circulating gold border — only the 2px outline moves */}
+              <div className="relative p-[2px] rounded-2xl overflow-hidden">
+                {/* Rotating conic gradient: 200% so corners stay covered during spin */}
                 <motion.div
-                  className="absolute inset-0 rounded-2xl"
+                  className="absolute w-[200%] h-[200%] -top-1/2 -left-1/2"
                   style={{
-                    background: 'conic-gradient(from 0deg at 50% 50%, transparent 0deg, transparent 300deg, #C8922A 330deg, #F5C842 345deg, #C8922A 360deg)',
-                    filter: 'blur(3px)',
+                    background: 'conic-gradient(from 0deg at 50% 50%, transparent 0deg, transparent 310deg, #C8922A 335deg, #F5C842 350deg, #C8922A 360deg)',
                   }}
                   animate={{ rotate: 360 }}
                   transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
                 />
-                <div className="relative rounded-2xl overflow-hidden">
+                {/* White mask covers the center — only the 2px border ring is visible */}
+                <div className="relative rounded-[14px] overflow-hidden bg-white">
                   <ContactForm onConverted={markConverted} />
                 </div>
               </div>
