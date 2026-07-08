@@ -212,16 +212,16 @@ export default function Home() {
           </motion.div>
         </motion.div>
 
-        {/* Scroll indicator — décalé à droite sur mobile pour ne pas chevaucher le bouton "Nos services" */}
+        {/* Scroll indicator — remonté et décalé à droite sur mobile pour dégager les boutons, agrandi et poussé dans l'espace vide à droite sur desktop */}
         <motion.div
-          className="absolute bottom-10 right-6 md:right-auto md:left-1/2 md:-translate-x-1/2 flex flex-col items-center gap-2"
+          className="absolute bottom-28 right-6 md:bottom-10 md:right-10 lg:right-20 z-20 flex flex-col items-center gap-3"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2, duration: 1 }}
         >
-          <span className="text-[10px] tracking-[0.3em] text-black/50 uppercase">Défiler</span>
+          <span className="text-xs md:text-sm tracking-[0.3em] text-black/70 font-semibold uppercase">Défiler</span>
           <motion.div
-            className="w-px h-12 bg-gradient-to-b from-black/30 to-transparent"
+            className="w-px h-14 md:h-20 bg-gradient-to-b from-black/50 to-transparent"
             animate={{ scaleY: [0, 1, 0], originY: 0 }}
             transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
           />
