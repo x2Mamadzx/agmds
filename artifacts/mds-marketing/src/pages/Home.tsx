@@ -583,59 +583,6 @@ export default function Home() {
               ))}
             </motion.div>
 
-            {/* ── Hologram Ticker — 7 derniers jours ── */}
-            <motion.div variants={FADE_UP} className="relative rounded-xl overflow-hidden border border-[#C8922A]/20 bg-white shadow-[0_4px_32px_rgba(200,146,42,0.08)]">
-              {/* header bar */}
-              <div className="flex items-center justify-between px-5 py-3 border-b border-[#C8922A]/15 bg-[#fffdf8]">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#C8922A] animate-pulse" />
-                  <span className="text-[10px] font-bold tracking-[0.25em] text-[#C8922A] uppercase">Résultats en direct — 7 derniers jours</span>
-                </div>
-                <span className="text-[10px] text-black/30 font-mono">Secteur PME</span>
-              </div>
-
-              {/* ticker */}
-              <div className="py-4 overflow-hidden">
-                <motion.div
-                  className="flex whitespace-nowrap"
-                  animate={{ x: ['0%', '-50%'] }}
-                  transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
-                >
-                  {[...Array(2)].map((_, copyIdx) => (
-                    <div key={copyIdx} className="flex items-center shrink-0">
-                      {[
-                        { val: '54 821', label: 'vues organiques', trend: '↑ 312%' },
-                        { val: '22', label: 'prospects qualifiés', trend: '↑ 8x' },
-                        { val: '4 107', label: 'clics sur le profil', trend: '↑ 204%' },
-                        { val: '1.2M', label: 'portée totale', trend: '↑ 187%' },
-                        { val: '68', label: 'messages reçus', trend: '↑ 5x' },
-                        { val: '9 340', label: "j'aime & partages", trend: '↑ 94%' },
-                        { val: '22', label: 'prospects convertis', trend: '↑ 8x' },
-                        { val: '14%', label: "taux d'engagement", trend: '↑ 6pts' },
-                        { val: 'Gratuit', label: 'depense pub', trend: '100% organique' },
-                      ].map((stat, i) => (
-                        <React.Fragment key={i}>
-                          <div className="inline-flex items-center gap-2.5 px-6 py-1">
-                            <span className="text-lg md:text-xl font-black text-[#C8922A] tracking-tight">
-                              {stat.val}
-                            </span>
-                            <div className="flex flex-col leading-none">
-                              <span className="text-[10px] text-black/40 uppercase tracking-widest">{stat.label}</span>
-                              <span className="text-[10px] font-bold text-[#C8922A]/70">{stat.trend}</span>
-                            </div>
-                          </div>
-                          <span className="text-[#C8922A]/25 text-sm select-none">|</span>
-                        </React.Fragment>
-                      ))}
-                    </div>
-                  ))}
-                </motion.div>
-              </div>
-
-              {/* fade masks */}
-              <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-white to-transparent pointer-events-none" />
-              <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-white to-transparent pointer-events-none" />
-            </motion.div>
 
           </motion.div>
         </div>
@@ -736,8 +683,7 @@ function ContactForm({ onConverted }: { onConverted: () => void }) {
 
       <div className="p-6 md:p-8">
         {/* Form header */}
-        <div className="mb-5 pb-5 border-b border-black/6 flex items-baseline gap-4">
-          <p className="text-[10px] tracking-[0.25em] text-[#C8922A] font-bold uppercase shrink-0">Appel gratuit — 15 min</p>
+        <div className="mb-5 pb-5 border-b border-black/6">
           <h3 className="text-lg font-black text-black leading-tight">
             Remplissez. On vous rappelle. <span className="text-gradient-gold">Simple.</span>
           </h3>
