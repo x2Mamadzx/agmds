@@ -531,7 +531,7 @@ export default function Home() {
       </section>
 
       {/* ── 6. CONTACT ──────────────────────────────────────────── */}
-      <section id="contact" className="py-36 relative overflow-hidden bg-[#f2f2f2]">
+      <section id="contact" className="py-16 md:py-36 relative overflow-hidden bg-[#f2f2f2]">
         <motion.div
           className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(200,146,42,0.18)_0%,transparent_60%)]"
           animate={{ opacity: [0.6, 1, 0.6] }}
@@ -546,23 +546,23 @@ export default function Home() {
             variants={STAGGER}
             className="max-w-5xl mx-auto"
           >
-            <motion.div variants={FADE_UP} className="text-center mb-16">
+            <motion.div variants={FADE_UP} className="text-center mb-8 md:mb-16">
               <span className="text-xs font-bold tracking-[0.3em] text-primary uppercase mb-4 block">Travaillons ensemble</span>
               <div className="overflow-hidden">
                 <motion.h2
                   variants={{ hidden: { y: '100%' }, visible: { y: 0, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } } }}
-                  className="text-5xl md:text-7xl font-black text-black leading-[0.9] mb-6"
+                  className="text-4xl md:text-7xl font-black text-black leading-[0.9] mb-4 md:mb-6"
                 >
                   RÉSERVEZ VOTRE <br />
                   <span className="text-gradient-gold">APPEL STRATÉGIQUE</span>
                 </motion.h2>
               </div>
-              <motion.p variants={FADE_UP} className="text-lg text-black/60 max-w-xl mx-auto">
+              <motion.p variants={FADE_UP} className="text-base md:text-lg text-black/60 max-w-xl mx-auto">
                 Places limitées. Remplissez le formulaire et nous vous contacterons dans les 24h pour fixer votre session gratuite.
               </motion.p>
             </motion.div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 md:gap-12 items-start">
               <motion.div variants={FADE_UP} className="lg:col-span-3">
                 <ContactForm onConverted={markConverted} />
               </motion.div>
@@ -668,23 +668,23 @@ function ContactForm({ onConverted }: { onConverted: () => void }) {
     );
   }
 
-  const inputClass = "w-full bg-[#eeeeee] border border-black/10 rounded-xl px-4 py-3.5 text-black placeholder:text-black/60 focus:outline-none focus:border-primary/60 focus:shadow-[0_0_20px_rgba(200,146,42,0.1)] transition-all duration-300 text-sm";
+  const inputClass = "w-full bg-[#eeeeee] border border-black/10 rounded-xl px-4 py-3 md:py-3.5 text-black placeholder:text-black/60 focus:outline-none focus:border-primary/60 focus:shadow-[0_0_20px_rgba(200,146,42,0.1)] transition-all duration-300 text-sm";
 
   return (
     <motion.form
       onSubmit={handleSubmit}
-      className="gold-border-premium bg-[#e9e9e9] rounded-2xl p-8 space-y-5 shadow-[0_0_80px_rgba(200,146,42,0.07)]"
+      className="gold-border-premium bg-[#e9e9e9] rounded-2xl p-5 md:p-8 space-y-4 md:space-y-5 shadow-[0_0_80px_rgba(200,146,42,0.07)]"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div className="space-y-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
+        <div className="space-y-1.5 md:space-y-2">
           <label className="text-xs font-semibold text-black/50 uppercase tracking-wider">Votre nom *</label>
           <input name="nom" required value={form.nom} onChange={handleChange} placeholder="Jean Tremblay" className={inputClass} />
         </div>
-        <div className="space-y-2">
+        <div className="space-y-1.5 md:space-y-2">
           <label className="text-xs font-semibold text-black/50 uppercase tracking-wider">Entreprise</label>
           <input name="entreprise" autoComplete="organization" list="entreprises-suggestions" value={form.entreprise} onChange={handleChange} placeholder="Votre entreprise inc." className={inputClass} />
           <datalist id="entreprises-suggestions">
@@ -692,17 +692,17 @@ function ContactForm({ onConverted }: { onConverted: () => void }) {
           </datalist>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div className="space-y-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
+        <div className="space-y-1.5 md:space-y-2">
           <label className="text-xs font-semibold text-black/50 uppercase tracking-wider">Courriel *</label>
           <input name="courriel" type="email" required value={form.courriel} onChange={handleChange} placeholder="jean@entreprise.ca" className={inputClass} />
         </div>
-        <div className="space-y-2">
+        <div className="space-y-1.5 md:space-y-2">
           <label className="text-xs font-semibold text-black/50 uppercase tracking-wider">Téléphone *</label>
           <input name="telephone" type="tel" required value={form.telephone} onChange={handleChange} placeholder="418-000-0000" className={inputClass} />
         </div>
       </div>
-      <div className="space-y-2">
+      <div className="space-y-1.5 md:space-y-2">
         <label className="text-xs font-semibold text-black/50 uppercase tracking-wider">Service qui vous intéresse *</label>
         <select name="service" required value={form.service} onChange={handleChange} className={inputClass + ' appearance-none cursor-pointer'}>
           <option value="" disabled className="text-black/50 bg-[#eeeeee]">Choisissez un service</option>
@@ -714,9 +714,9 @@ function ContactForm({ onConverted }: { onConverted: () => void }) {
           <option value="tout" className="bg-[#eeeeee]">Tout — je veux une stratégie complète</option>
         </select>
       </div>
-      <div className="space-y-2">
+      <div className="space-y-1.5 md:space-y-2">
         <label className="text-xs font-semibold text-black/50 uppercase tracking-wider">Parlez-nous de votre projet</label>
-        <textarea name="message" value={form.message} onChange={handleChange} rows={4}
+        <textarea name="message" value={form.message} onChange={handleChange} rows={3}
           placeholder="Décrivez vos objectifs, votre budget approximatif, vos défis actuels..."
           className={inputClass + ' resize-none'} />
       </div>
@@ -724,7 +724,7 @@ function ContactForm({ onConverted }: { onConverted: () => void }) {
         <Button
           type="submit"
           size="lg"
-          className="w-full uppercase tracking-widest text-sm h-14 shadow-[0_0_30px_rgba(200,146,42,0.2)] hover:shadow-[0_0_50px_rgba(200,146,42,0.4)] transition-shadow duration-500"
+          className="w-full uppercase tracking-widest text-sm h-12 md:h-14 shadow-[0_0_30px_rgba(200,146,42,0.2)] hover:shadow-[0_0_50px_rgba(200,146,42,0.4)] transition-shadow duration-500"
           disabled={loading}
         >
           {loading ? (
