@@ -565,17 +565,7 @@ export default function Home() {
             <motion.div variants={FADE_UP} className="max-w-4xl mx-auto mb-10 md:mb-12">
               {/* Circulating gold light border */}
               <div className="relative rounded-2xl">
-                {/* Glow layer — blurs outside the clip so the light bleeds */}
-                <motion.div
-                  className="absolute w-[200%] h-[200%] -top-1/2 -left-1/2"
-                  style={{
-                    background: 'conic-gradient(from 0deg at 50% 50%, transparent 0deg, transparent 305deg, rgba(200,146,42,0.4) 330deg, rgba(245,200,66,0.9) 348deg, rgba(200,146,42,0.4) 360deg)',
-                    filter: 'blur(10px)',
-                  }}
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
-                />
-                {/* Hard border — clipped, same rotation stays in sync */}
+                {/* Border only */}
                 <div className="relative p-[2px] rounded-2xl overflow-hidden">
                   <motion.div
                     className="absolute w-[200%] h-[200%] -top-1/2 -left-1/2"
