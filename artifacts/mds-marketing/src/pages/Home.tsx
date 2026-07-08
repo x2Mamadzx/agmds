@@ -570,10 +570,10 @@ export default function Home() {
                   <motion.div
                     className="absolute w-[200%] h-[200%] -top-1/2 -left-1/2"
                     style={{
-                      background: 'conic-gradient(from 0deg at 50% 50%, transparent 0deg, transparent 310deg, #C8922A 335deg, #F5C842 350deg, #C8922A 360deg)',
+                      background: 'conic-gradient(from 0deg at 50% 50%, transparent 0deg, #C8922A 60deg, #F5C842 120deg, #FFE066 150deg, #F5C842 180deg, #C8922A 240deg, transparent 300deg, transparent 360deg)',
                     }}
                     animate={{ rotate: 360 }}
-                    transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+                    transition={{ duration: 3.5, repeat: Infinity, ease: 'linear' }}
                   />
                   <div className="relative rounded-[14px] overflow-hidden bg-white">
                     <ContactForm onConverted={markConverted} />
