@@ -90,7 +90,7 @@ export default function Home() {
         <motion.div className="absolute inset-0 z-0" style={{ y: smoothY, scale: heroScale }}>
           <img src={heroImage} alt="Boardroom" className="w-full h-full object-cover opacity-35" />
           <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/70 to-background" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(200,146,42,0.12)_0%,rgba(10,10,10,0.9)_65%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(200,146,42,0.12)_0%,rgba(245,245,245,0.9)_65%)]" />
         </motion.div>
 
         <motion.div className="container relative z-10 px-6 mx-auto" style={{ opacity: heroOpacity }}>
@@ -98,13 +98,13 @@ export default function Home() {
 
             <motion.div variants={FADE_UP} className="flex items-center gap-3 mb-8">
               <span className="w-2 h-2 rounded-full bg-[#CC2222] animate-pulse" />
-              <span className="text-sm font-semibold tracking-[0.25em] text-white/60 uppercase">L'agence de croissance #1 au Québec</span>
+              <span className="text-sm font-semibold tracking-[0.25em] text-black/60 uppercase">L'agence de croissance #1 au Québec</span>
             </motion.div>
 
             <div className="overflow-hidden mb-4">
               <motion.h1
                 variants={{ hidden: { y: '110%' }, visible: { y: 0, transition: { duration: 1, ease: [0.22, 1, 0.36, 1] } } }}
-                className="text-7xl md:text-9xl font-black leading-[0.88] text-white"
+                className="text-7xl md:text-9xl font-black leading-[0.88] text-black"
               >
                 DOMINEZ
               </motion.h1>
@@ -118,7 +118,7 @@ export default function Home() {
               </motion.h1>
             </div>
 
-            <motion.p variants={FADE_UP} className="text-xl md:text-2xl text-white/55 font-light max-w-2xl mb-12 leading-relaxed">
+            <motion.p variants={FADE_UP} className="text-xl md:text-2xl text-black/55 font-light max-w-2xl mb-12 leading-relaxed">
               Nous propulsons les entreprises ambitieuses. Stratégies implacables.
               Résultats mesurables. Un ROI qui fait la différence.
             </motion.p>
@@ -132,7 +132,7 @@ export default function Home() {
                 </Button>
               </motion.div>
               <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-                <Button size="lg" variant="outline" className="uppercase tracking-widest text-sm text-white border-white/20 backdrop-blur-sm hover:border-white/40 transition-all"
+                <Button size="lg" variant="outline" className="uppercase tracking-widest text-sm text-black border-black/20 backdrop-blur-sm hover:border-black/40 transition-all"
                   onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}>
                   Nos services
                 </Button>
@@ -148,9 +148,9 @@ export default function Home() {
           animate={{ opacity: 1 }}
           transition={{ delay: 2, duration: 1 }}
         >
-          <span className="text-[10px] tracking-[0.3em] text-white/30 uppercase">Défiler</span>
+          <span className="text-[10px] tracking-[0.3em] text-black/50 uppercase">Défiler</span>
           <motion.div
-            className="w-px h-12 bg-gradient-to-b from-white/30 to-transparent"
+            className="w-px h-12 bg-gradient-to-b from-black/30 to-transparent"
             animate={{ scaleY: [0, 1, 0], originY: 0 }}
             transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
           />
@@ -158,7 +158,7 @@ export default function Home() {
       </section>
 
       {/* ── 2. HOOK ─────────────────────────────────────────────── */}
-      <section className="py-36 relative border-t border-white/5 bg-[#080808] overflow-hidden">
+      <section className="py-36 relative border-t border-black/5 bg-[#f7f7f7] overflow-hidden">
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-primary/8 rounded-full blur-[120px] pointer-events-none" />
 
         <div className="container px-6 mx-auto">
@@ -180,14 +180,14 @@ export default function Home() {
               </div>
               <motion.h2 variants={CLIP_UP} className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
                 Le marketing générique <br />
-                <span className="text-white/35">tue les bonnes entreprises.</span>
+                <span className="text-black/55">tue les bonnes entreprises.</span>
               </motion.h2>
-              <motion.p variants={FADE_UP} className="text-lg text-white/55 leading-relaxed mb-10">
+              <motion.p variants={FADE_UP} className="text-lg text-black/55 leading-relaxed mb-10">
                 Vos concurrents ne dorment pas. Si vous n'êtes pas omniprésent de manière stratégique,
                 vous perdez des parts de marché chaque jour. Nous ne vendons pas des "likes" ou des "vues".
                 Nous construisons des machines à acquisition de clients.
               </motion.p>
-              <motion.div variants={FADE_UP} className="grid grid-cols-2 gap-8 pt-8 border-t border-white/10">
+              <motion.div variants={FADE_UP} className="grid grid-cols-2 gap-8 pt-8 border-t border-black/10">
                 {[
                   { val: '3s', label: 'Pour capter l\'attention de votre cible' },
                   { val: '10x', label: 'Le potentiel de ROI d\'une campagne optimisée' },
@@ -202,7 +202,7 @@ export default function Home() {
                     >
                       {item.val}
                     </motion.h4>
-                    <p className="text-sm text-white/50">{item.label}</p>
+                    <p className="text-sm text-black/50">{item.label}</p>
                   </div>
                 ))}
               </motion.div>
@@ -219,14 +219,14 @@ export default function Home() {
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 src={dataImage}
                 alt="Studio production"
-                className="rounded-2xl border border-white/10 shadow-2xl relative z-10 w-full object-cover aspect-[4/3]"
+                className="rounded-2xl border border-black/10 shadow-2xl relative z-10 w-full object-cover aspect-[4/3]"
               />
               <motion.div
                 initial={{ opacity: 0, x: -40, rotate: -3 }}
                 whileInView={{ opacity: 1, x: 0, rotate: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.4, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute -bottom-8 -left-8 bg-card border border-white/10 p-6 rounded-xl shadow-2xl z-20 w-64 backdrop-blur-md"
+                className="absolute -bottom-8 -left-8 bg-card border border-black/10 p-6 rounded-xl shadow-2xl z-20 w-64 backdrop-blur-md"
               >
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center">
@@ -234,7 +234,7 @@ export default function Home() {
                   </div>
                   <div>
                     <div className="text-sm font-bold">Croissance des revenus</div>
-                    <div className="text-xs text-white/50">Moyenne clients MDS</div>
+                    <div className="text-xs text-black/50">Moyenne clients MDS</div>
                   </div>
                 </div>
                 <div className="text-4xl font-display font-bold text-gradient-gold">+<Counter to={187} suffix="%" /></div>
@@ -267,7 +267,7 @@ export default function Home() {
             <motion.h2 variants={CLIP_UP} className="text-4xl md:text-6xl font-black mb-6">
               Un arsenal complet <br /><span className="text-gradient-gold">pour la domination.</span>
             </motion.h2>
-            <motion.p variants={FADE_UP} className="text-lg text-white/55">
+            <motion.p variants={FADE_UP} className="text-lg text-black/55">
               Chaque service est pensé avec un seul objectif : générer de la croissance concrète pour votre entreprise.
             </motion.p>
           </motion.div>
@@ -287,7 +287,7 @@ export default function Home() {
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ delay: index * 0.08, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               >
-                <TiltCard className="h-full bg-card/40 border border-white/5 hover:border-primary/40 p-8 rounded-2xl transition-colors duration-300 group hover:bg-card/70 relative overflow-hidden cursor-default">
+                <TiltCard className="h-full bg-card/40 border border-black/5 hover:border-primary/40 p-8 rounded-2xl transition-colors duration-300 group hover:bg-card/70 relative overflow-hidden cursor-default">
                   <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-[#C8922A] to-[#F5C842] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
                   <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(200,146,42,0.05)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <motion.div
@@ -297,8 +297,8 @@ export default function Home() {
                   >
                     <service.icon className="w-7 h-7 text-primary" />
                   </motion.div>
-                  <h3 className="text-xl font-bold mb-3 text-white">{service.title}</h3>
-                  <p className="text-white/50 leading-relaxed text-sm">{service.desc}</p>
+                  <h3 className="text-xl font-bold mb-3 text-black">{service.title}</h3>
+                  <p className="text-black/50 leading-relaxed text-sm">{service.desc}</p>
                 </TiltCard>
               </motion.div>
             ))}
@@ -311,14 +311,14 @@ export default function Home() {
               className="hidden lg:block relative rounded-2xl overflow-hidden"
             >
               <img src={servicesImage} alt="Production" className="w-full h-full object-cover absolute inset-0 opacity-50 scale-105 hover:scale-100 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-white via-white/30 to-transparent" />
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* ── 4. PROCESS ──────────────────────────────────────────── */}
-      <section id="approach" className="py-36 relative bg-[#050505] overflow-hidden">
+      <section id="approach" className="py-36 relative bg-[#fafafa] overflow-hidden">
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-primary/6 rounded-full blur-[100px] pointer-events-none" />
 
         <div className="container px-6 mx-auto">
@@ -340,14 +340,14 @@ export default function Home() {
                 ].map((step, i) => (
                   <motion.div key={i} variants={FADE_UP} className="flex gap-6 group">
                     <motion.div
-                      className="font-display text-5xl font-black text-white/8 group-hover:text-primary/20 transition-colors duration-500 min-w-[3rem]"
+                      className="font-display text-5xl font-black text-black/8 group-hover:text-primary/20 transition-colors duration-500 min-w-[3rem]"
                       whileHover={{ scale: 1.1 }}
                     >
                       {step.num}
                     </motion.div>
                     <div className="pt-2">
-                      <h4 className="text-xl font-bold mb-2 text-white group-hover:text-primary transition-colors duration-300">{step.title}</h4>
-                      <p className="text-white/55 leading-relaxed">{step.desc}</p>
+                      <h4 className="text-xl font-bold mb-2 text-black group-hover:text-primary transition-colors duration-300">{step.title}</h4>
+                      <p className="text-black/55 leading-relaxed">{step.desc}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -360,7 +360,7 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             >
-              <TiltCard className="bg-card border border-white/10 rounded-2xl p-10 flex flex-col justify-center relative overflow-hidden">
+              <TiltCard className="bg-card border border-black/10 rounded-2xl p-10 flex flex-col justify-center relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary/8 rounded-full blur-[80px]" />
                 <motion.div
                   animate={{ rotate: 360 }}
@@ -369,7 +369,7 @@ export default function Home() {
                 />
                 <BarChart3 className="w-14 h-14 text-primary mb-8" />
                 <h3 className="text-3xl font-display font-bold mb-4">La Data dicte la direction.</h3>
-                <p className="text-white/55 text-base mb-10 leading-relaxed">
+                <p className="text-black/55 text-base mb-10 leading-relaxed">
                   Nous ne prenons pas de décisions basées sur des "feelings". Chaque dollar investi doit avoir
                   une justification mathématique et un retour traçable.
                 </p>
@@ -380,12 +380,12 @@ export default function Home() {
                   ].map((item, i) => (
                     <div key={i}>
                       <div className="flex justify-between items-center text-sm mb-2">
-                        <span className="text-white/65">{item.label}</span>
+                        <span className="text-black/65">{item.label}</span>
                         <span className="font-bold" style={{ color: item.color }}>
                           <Counter to={item.to} prefix={item.to > 0 ? '+' : ''} suffix="%" />
                         </span>
                       </div>
-                      <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
+                      <div className="w-full bg-black/5 h-1.5 rounded-full overflow-hidden">
                         <motion.div
                           initial={{ width: 0 }}
                           whileInView={{ width: `${item.pct}%` }}
@@ -439,7 +439,7 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.15, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               >
-                <TiltCard className="p-10 border border-white/8 bg-card/60 rounded-2xl relative overflow-hidden group hover:border-primary/30 transition-colors duration-500 cursor-default">
+                <TiltCard className="p-10 border border-black/8 bg-card/60 rounded-2xl relative overflow-hidden group hover:border-primary/30 transition-colors duration-500 cursor-default">
                   <motion.div
                     className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(200,146,42,0.08)_0%,transparent_70%)] opacity-0 group-hover:opacity-100"
                     transition={{ duration: 0.5 }}
@@ -449,8 +449,8 @@ export default function Home() {
                     <div className="text-6xl md:text-7xl font-black text-gradient-gold mb-3 leading-none tabular-nums">
                       <Counter to={item.to} from={item.from} prefix={item.prefix} suffix={item.suffix} format={item.format} />
                     </div>
-                    <div className="text-xl font-bold text-white mb-1">{item.label}</div>
-                    <div className="text-sm text-white/45">{item.sub}</div>
+                    <div className="text-xl font-bold text-black mb-1">{item.label}</div>
+                    <div className="text-sm text-black/60">{item.sub}</div>
                   </div>
                 </TiltCard>
               </motion.div>
@@ -460,7 +460,7 @@ export default function Home() {
       </section>
 
       {/* ── 6. CONTACT ──────────────────────────────────────────── */}
-      <section id="contact" className="py-36 relative overflow-hidden bg-[#0d0d0d]">
+      <section id="contact" className="py-36 relative overflow-hidden bg-[#f2f2f2]">
         <motion.div
           className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(200,146,42,0.18)_0%,transparent_60%)]"
           animate={{ opacity: [0.6, 1, 0.6] }}
@@ -480,13 +480,13 @@ export default function Home() {
               <div className="overflow-hidden">
                 <motion.h2
                   variants={{ hidden: { y: '100%' }, visible: { y: 0, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } } }}
-                  className="text-5xl md:text-7xl font-black text-white leading-[0.9] mb-6"
+                  className="text-5xl md:text-7xl font-black text-black leading-[0.9] mb-6"
                 >
                   RÉSERVEZ VOTRE <br />
                   <span className="text-gradient-gold">APPEL STRATÉGIQUE</span>
                 </motion.h2>
               </div>
-              <motion.p variants={FADE_UP} className="text-lg text-white/45 max-w-xl mx-auto">
+              <motion.p variants={FADE_UP} className="text-lg text-black/60 max-w-xl mx-auto">
                 Places limitées. Remplissez le formulaire et nous vous contacterons dans les 24h pour fixer votre session gratuite.
               </motion.p>
             </motion.div>
@@ -513,8 +513,8 @@ export default function Home() {
                       <CheckCircle2 className="text-primary w-6 h-6 mt-0.5 shrink-0" />
                     </motion.div>
                     <div>
-                      <div className="font-bold text-white mb-1">{item.title}</div>
-                      <div className="text-sm text-white/45 leading-relaxed">{item.desc}</div>
+                      <div className="font-bold text-black mb-1">{item.title}</div>
+                      <div className="text-sm text-black/60 leading-relaxed">{item.desc}</div>
                     </div>
                   </motion.div>
                 ))}
@@ -582,7 +582,7 @@ function ContactForm() {
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-        className="bg-card border border-white/10 rounded-2xl p-10 text-center"
+        className="bg-card border border-black/10 rounded-2xl p-10 text-center"
       >
         <motion.div
           animate={{ scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] }}
@@ -590,18 +590,18 @@ function ContactForm() {
         >
           <CheckCircle2 className="text-primary w-16 h-16 mx-auto mb-6" />
         </motion.div>
-        <h3 className="text-2xl font-black text-white mb-3">Message envoyé !</h3>
-        <p className="text-white/55">Notre équipe vous contactera dans les prochaines 24 heures pour confirmer votre appel stratégique.</p>
+        <h3 className="text-2xl font-black text-black mb-3">Message envoyé !</h3>
+        <p className="text-black/55">Notre équipe vous contactera dans les prochaines 24 heures pour confirmer votre appel stratégique.</p>
       </motion.div>
     );
   }
 
-  const inputClass = "w-full bg-[#111] border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-white/25 focus:outline-none focus:border-primary/60 focus:shadow-[0_0_20px_rgba(200,146,42,0.1)] transition-all duration-300 text-sm";
+  const inputClass = "w-full bg-[#eeeeee] border border-black/10 rounded-xl px-4 py-3.5 text-black placeholder:text-black/60 focus:outline-none focus:border-primary/60 focus:shadow-[0_0_20px_rgba(200,146,42,0.1)] transition-all duration-300 text-sm";
 
   return (
     <motion.form
       onSubmit={handleSubmit}
-      className="bg-[#161616] border border-white/15 rounded-2xl p-8 space-y-5 shadow-[0_0_80px_rgba(200,146,42,0.07)]"
+      className="bg-[#e9e9e9] border border-black/15 rounded-2xl p-8 space-y-5 shadow-[0_0_80px_rgba(200,146,42,0.07)]"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -609,11 +609,11 @@ function ContactForm() {
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div className="space-y-2">
-          <label className="text-xs font-semibold text-white/50 uppercase tracking-wider">Votre nom *</label>
+          <label className="text-xs font-semibold text-black/50 uppercase tracking-wider">Votre nom *</label>
           <input name="nom" required value={form.nom} onChange={handleChange} placeholder="Jean Tremblay" className={inputClass} />
         </div>
         <div className="space-y-2">
-          <label className="text-xs font-semibold text-white/50 uppercase tracking-wider">Entreprise</label>
+          <label className="text-xs font-semibold text-black/50 uppercase tracking-wider">Entreprise</label>
           <input name="entreprise" autoComplete="organization" list="entreprises-suggestions" value={form.entreprise} onChange={handleChange} placeholder="Votre entreprise inc." className={inputClass} />
           <datalist id="entreprises-suggestions">
             {recentEntreprises.map(e => <option key={e} value={e} />)}
@@ -622,28 +622,28 @@ function ContactForm() {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div className="space-y-2">
-          <label className="text-xs font-semibold text-white/50 uppercase tracking-wider">Courriel *</label>
+          <label className="text-xs font-semibold text-black/50 uppercase tracking-wider">Courriel *</label>
           <input name="courriel" type="email" required value={form.courriel} onChange={handleChange} placeholder="jean@entreprise.ca" className={inputClass} />
         </div>
         <div className="space-y-2">
-          <label className="text-xs font-semibold text-white/50 uppercase tracking-wider">Téléphone *</label>
+          <label className="text-xs font-semibold text-black/50 uppercase tracking-wider">Téléphone *</label>
           <input name="telephone" type="tel" required value={form.telephone} onChange={handleChange} placeholder="418-000-0000" className={inputClass} />
         </div>
       </div>
       <div className="space-y-2">
-        <label className="text-xs font-semibold text-white/50 uppercase tracking-wider">Service qui vous intéresse *</label>
+        <label className="text-xs font-semibold text-black/50 uppercase tracking-wider">Service qui vous intéresse *</label>
         <select name="service" required value={form.service} onChange={handleChange} className={inputClass + ' appearance-none cursor-pointer'}>
-          <option value="" disabled className="text-white/30 bg-[#111]">Choisissez un service</option>
-          <option value="videos" className="bg-[#111]">Vidéos organiques</option>
-          <option value="pub" className="bg-[#111]">Campagnes publicitaires (Meta / Google / TikTok)</option>
-          <option value="reseaux" className="bg-[#111]">Gestion des réseaux sociaux</option>
-          <option value="contenu" className="bg-[#111]">Création de contenu</option>
-          <option value="strategie" className="bg-[#111]">Stratégie de marque</option>
-          <option value="tout" className="bg-[#111]">Tout — je veux une stratégie complète</option>
+          <option value="" disabled className="text-black/50 bg-[#eeeeee]">Choisissez un service</option>
+          <option value="videos" className="bg-[#eeeeee]">Vidéos organiques</option>
+          <option value="pub" className="bg-[#eeeeee]">Campagnes publicitaires (Meta / Google / TikTok)</option>
+          <option value="reseaux" className="bg-[#eeeeee]">Gestion des réseaux sociaux</option>
+          <option value="contenu" className="bg-[#eeeeee]">Création de contenu</option>
+          <option value="strategie" className="bg-[#eeeeee]">Stratégie de marque</option>
+          <option value="tout" className="bg-[#eeeeee]">Tout — je veux une stratégie complète</option>
         </select>
       </div>
       <div className="space-y-2">
-        <label className="text-xs font-semibold text-white/50 uppercase tracking-wider">Parlez-nous de votre projet</label>
+        <label className="text-xs font-semibold text-black/50 uppercase tracking-wider">Parlez-nous de votre projet</label>
         <textarea name="message" value={form.message} onChange={handleChange} rows={4}
           placeholder="Décrivez vos objectifs, votre budget approximatif, vos défis actuels..."
           className={inputClass + ' resize-none'} />

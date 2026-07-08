@@ -53,14 +53,14 @@ function LoginGate({ onAuthenticated }: { onAuthenticated: (password: string) =>
         onSubmit={handleSubmit}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-[#161616] border border-white/10 rounded-2xl p-10 w-full max-w-sm space-y-6"
+        className="bg-[#e9e9e9] border border-black/10 rounded-2xl p-10 w-full max-w-sm space-y-6"
       >
         <div className="flex flex-col items-center gap-3 text-center">
           <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary">
             <Lock size={24} />
           </div>
-          <h1 className="text-xl font-bold text-white">Espace admin</h1>
-          <p className="text-sm text-white/50">Accès réservé à l'équipe MDS Marketing.</p>
+          <h1 className="text-xl font-bold text-black">Espace admin</h1>
+          <p className="text-sm text-black/50">Accès réservé à l'équipe MDS Marketing.</p>
         </div>
         <input
           type="password"
@@ -68,7 +68,7 @@ function LoginGate({ onAuthenticated }: { onAuthenticated: (password: string) =>
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Mot de passe"
-          className="w-full bg-[#111] border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/25 focus:outline-none focus:border-primary/60 text-sm"
+          className="w-full bg-[#eeeeee] border border-black/10 rounded-xl px-4 py-3 text-black placeholder:text-black/60 focus:outline-none focus:border-primary/60 text-sm"
         />
         {error && <p className="text-sm text-red-400 text-center">Mot de passe incorrect.</p>}
         <Button type="submit" className="w-full uppercase tracking-widest text-xs" disabled={leadsQuery.isFetching}>
@@ -115,13 +115,13 @@ function LeadCard({ lead, password }: { lead: Lead; password: string }) {
       layout
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-[#161616] border border-white/10 rounded-xl p-4 space-y-3"
+      className="bg-[#e9e9e9] border border-black/10 rounded-xl p-4 space-y-3"
     >
       <div className="flex items-start justify-between gap-2">
         <div>
-          <p className="font-semibold text-white">{lead.nom}</p>
+          <p className="font-semibold text-black">{lead.nom}</p>
           {lead.entreprise && (
-            <p className="text-xs text-white/50 flex items-center gap-1 mt-0.5">
+            <p className="text-xs text-black/50 flex items-center gap-1 mt-0.5">
               <Building2 size={12} /> {lead.entreprise}
             </p>
           )}
@@ -131,12 +131,12 @@ function LeadCard({ lead, password }: { lead: Lead; password: string }) {
           onClick={handleDelete}
           disabled={deleteLead.isPending}
           aria-label={`Supprimer ${lead.nom}`}
-          className="text-white/30 hover:text-red-400 transition-colors shrink-0 disabled:opacity-40"
+          className="text-black/50 hover:text-red-400 transition-colors shrink-0 disabled:opacity-40"
         >
           <Trash2 size={14} />
         </button>
       </div>
-      <div className="space-y-1 text-xs text-white/60">
+      <div className="space-y-1 text-xs text-black/60">
         <a href={`mailto:${lead.courriel}`} className="flex items-center gap-1.5 hover:text-primary transition-colors">
           <Mail size={12} /> {lead.courriel}
         </a>
@@ -146,12 +146,12 @@ function LeadCard({ lead, password }: { lead: Lead; password: string }) {
           </a>
         )}
       </div>
-      <p className="text-xs text-white/40 uppercase tracking-wider">{SERVICE_LABELS[lead.service] ?? lead.service}</p>
-      {lead.message && <p className="text-xs text-white/50 line-clamp-3">{lead.message}</p>}
+      <p className="text-xs text-black/55 uppercase tracking-wider">{SERVICE_LABELS[lead.service] ?? lead.service}</p>
+      {lead.message && <p className="text-xs text-black/50 line-clamp-3">{lead.message}</p>}
       <select
         value={lead.status}
         onChange={(e) => updateLead.mutate({ id: lead.id, data: { status: e.target.value as Lead['status'] } })}
-        className="w-full bg-[#0d0d0d] border border-white/10 rounded-lg px-2 py-2 text-xs text-white focus:outline-none focus:border-primary/60"
+        className="w-full bg-[#f2f2f2] border border-black/10 rounded-lg px-2 py-2 text-xs text-black focus:outline-none focus:border-primary/60"
       >
         {STATUS_ORDER.map((status) => (
           <option key={status} value={status}>{STATUS_LABELS[status]}</option>
@@ -179,10 +179,10 @@ function Dashboard({ password, onLogout }: { password: string; onLogout: () => v
     <div className="min-h-screen px-6 py-32 max-w-[1600px] mx-auto">
       <div className="flex items-center justify-between mb-10 flex-wrap gap-4">
         <div>
-          <h1 className="text-3xl font-black text-white flex items-center gap-3">
+          <h1 className="text-3xl font-black text-black flex items-center gap-3">
             <Users className="text-primary" /> Pipeline des prospects
           </h1>
-          <p className="text-white/50 text-sm mt-1">{leads.length} prospect{leads.length > 1 ? 's' : ''} au total</p>
+          <p className="text-black/50 text-sm mt-1">{leads.length} prospect{leads.length > 1 ? 's' : ''} au total</p>
         </div>
         <div className="flex gap-3">
           <Button variant="outline" size="sm" onClick={() => leadsQuery.refetch()}>
@@ -193,14 +193,14 @@ function Dashboard({ password, onLogout }: { password: string; onLogout: () => v
       </div>
 
       {leadsQuery.isLoading ? (
-        <p className="text-white/50">Chargement...</p>
+        <p className="text-black/50">Chargement...</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
           {byStatus.map(({ status, leads: statusLeads }) => (
             <div key={status} className="space-y-3">
               <div className="flex items-center justify-between px-1">
-                <h2 className="text-xs font-bold uppercase tracking-wider text-white/60">{STATUS_LABELS[status]}</h2>
-                <span className="text-xs text-white/40 bg-white/5 rounded-full px-2 py-0.5">{statusLeads.length}</span>
+                <h2 className="text-xs font-bold uppercase tracking-wider text-black/60">{STATUS_LABELS[status]}</h2>
+                <span className="text-xs text-black/55 bg-black/5 rounded-full px-2 py-0.5">{statusLeads.length}</span>
               </div>
               <div className="space-y-3">
                 {statusLeads.map((lead) => (

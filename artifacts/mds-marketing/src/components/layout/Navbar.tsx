@@ -33,7 +33,7 @@ export function Navbar() {
   return (
     <motion.header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? 'bg-background/90 backdrop-blur-xl border-b border-white/5 py-4' : 'bg-transparent py-6'
+        scrolled ? 'bg-background/90 backdrop-blur-xl border-b border-black/5 py-4' : 'bg-transparent py-6'
       }`}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -54,7 +54,7 @@ export function Navbar() {
             <button
               key={link.id}
               onClick={() => scrollTo(link.id)}
-              className="relative text-sm font-medium text-white/60 hover:text-white transition-colors uppercase tracking-wider group"
+              className="relative text-sm font-medium text-black/60 hover:text-black transition-colors uppercase tracking-wider group"
             >
               {link.name}
               <span className="absolute -bottom-1 left-0 w-0 h-px bg-gradient-to-r from-[#C8922A] to-[#F5C842] group-hover:w-full transition-all duration-300" />
@@ -72,7 +72,7 @@ export function Navbar() {
 
         {/* Mobile Toggle */}
         <motion.button
-          className="md:hidden text-white p-2"
+          className="md:hidden text-black p-2"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           whileTap={{ scale: 0.9 }}
         >
@@ -98,7 +98,7 @@ export function Navbar() {
             animate={{ opacity: 1, clipPath: 'inset(0 0 0% 0)' }}
             exit={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="md:hidden bg-[#0d0d0d] border-b border-white/10 overflow-hidden"
+            className="md:hidden bg-[#f2f2f2] border-b border-black/10 overflow-hidden"
           >
             <div className="flex flex-col px-6 py-8 space-y-2">
               {navLinks.map((link, i) => (
@@ -108,7 +108,7 @@ export function Navbar() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.07, duration: 0.3 }}
                   onClick={() => scrollTo(link.id)}
-                  className="text-left text-2xl font-black text-white/80 hover:text-primary transition-colors py-3 border-b border-white/5 uppercase tracking-wider"
+                  className="text-left text-2xl font-black text-black/80 hover:text-primary transition-colors py-3 border-b border-black/5 uppercase tracking-wider"
                 >
                   {link.name}
                 </motion.button>

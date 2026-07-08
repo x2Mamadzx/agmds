@@ -9,7 +9,7 @@ const scrollTo = (id: string) => {
 
 export function Footer() {
   return (
-    <footer className="bg-[#050505] border-t border-white/5 pt-24 pb-12 relative overflow-hidden">
+    <footer className="bg-[#fafafa] border-t border-black/5 pt-24 pb-12 relative overflow-hidden">
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[300px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="container mx-auto px-6 relative z-10">
@@ -18,17 +18,17 @@ export function Footer() {
           {/* Brand Col */}
           <div className="lg:col-span-2">
             <img src={logoUrl} alt="MDS Marketing" className="h-16 mb-6 rounded" />
-            <p className="text-white/60 max-w-sm mb-8 text-lg">
+            <p className="text-black/60 max-w-sm mb-8 text-lg">
               L'agence des entreprises québécoises qui refusent le statu quo. Nous transformons l'attention en revenus.
             </p>
             <div className="flex gap-4">
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all text-white">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all text-black">
                 <Instagram size={20} />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all text-white">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all text-black">
                 <Linkedin size={20} />
               </a>
-              <a href="mailto:info@agmds.com" className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all text-white">
+              <a href="mailto:info@agmds.com" className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-all text-black">
                 <Mail size={20} />
               </a>
             </div>
@@ -37,7 +37,7 @@ export function Footer() {
           {/* Links Col */}
           <div>
             <h4 className="font-display font-semibold text-lg mb-6 uppercase tracking-wider">Expertise</h4>
-            <ul className="space-y-4 text-white/60">
+            <ul className="space-y-4 text-black/60">
               {['services', 'services', 'services', 'services', 'services'].map((id, i) => (
                 <li key={i}>
                   <button onClick={() => scrollTo(id)} className="hover:text-primary transition-colors text-left">
@@ -51,7 +51,7 @@ export function Footer() {
           {/* Contact Col */}
           <div>
             <h4 className="font-display font-semibold text-lg mb-6 uppercase tracking-wider">Contact</h4>
-            <ul className="space-y-4 text-white/60">
+            <ul className="space-y-4 text-black/60">
               <li>Québec, Canada</li>
               <li>
                 <a href="tel:4183139250" className="hover:text-primary transition-colors">
@@ -72,7 +72,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between text-sm text-white/40">
+        <div className="border-t border-black/10 pt-8 flex flex-col md:flex-row items-center justify-between text-sm text-black/55">
           <p>© {new Date().getFullYear()} MDS Marketing. Tous droits réservés.</p>
           <div className="flex gap-6 mt-4 md:mt-0 items-center">
             <span className="cursor-default">Politique de confidentialité</span>
