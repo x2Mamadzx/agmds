@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useQueryClient } from '@tanstack/react-query';
-import { Lock, RefreshCw, Users, Mail, Phone, Building2, Trash2 } from 'lucide-react';
+import { Lock, RefreshCw, Users, Mail, Phone, Building2, Trash2, Activity, Clock, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useListLeads, useUpdateLead, useDeleteLead, getListLeadsQueryKey, type Lead } from '@workspace/api-client-react';
+import { useListLeads, useUpdateLead, useDeleteLead, useGetVisitStats, getListLeadsQueryKey, type Lead } from '@workspace/api-client-react';
 
 const SESSION_KEY = 'mds_admin_password';
 
@@ -161,6 +161,75 @@ function LeadCard({ lead, password }: { lead: Lead; password: string }) {
   );
 }
 
+function formatDuration(seconds: number): string {
+  if (seconds < 60) return `${seconds}s`;
+  const minutes = Math.floor(seconds / 60);
+  const rest = seconds % 60;
+  return rest > 0 ? `${minutes}m ${rest}s` : `${minutes}m`;
+}
+
+function TrafficStatCard({ label, count, avgDurationSeconds, conversionRate, converted }: {
+  label: string;
+  count: number;
+  avgDurationSeconds: number;
+  conversionRate: number;
+  converted: number;
+}) {
+  return (
+    <div className="bg-[#e9e9e9] border border-black/10 rounded-xl p-5 space-y-4">
+      <p className="text-xs font-bold uppercase tracking-wider text-black/50">{label}</p>
+      <p className="text-3xl font-black text-black">{count.toLocaleString('fr-CA')}</p>
+      <div className="flex items-center gap-4 text-xs text-black/60 pt-1">
+        <span className="flex items-center gap-1.5">
+          <Clock size={13} className="text-primary" /> {formatDuration(avgDurationSeconds)} en moyenne
+        </span>
+        <span className="flex items-center gap-1.5">
+          <CheckCircle2 size={13} className="text-primary" /> {converted} formulaire{converted > 1 ? 's' : ''} ({Math.round(conversionRate * 100)}%)
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function TrafficSection({ password }: { password: string }) {
+  const statsQuery = useGetVisitStats({ request: { headers: { 'X-Admin-Password': password } } });
+
+  return (
+    <div className="mb-12">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-black text-black flex items-center gap-2">
+          <Activity className="text-primary" size={20} /> Trafic du site
+        </h2>
+        <Button variant="outline" size="sm" onClick={() => statsQuery.refetch()}>
+          <RefreshCw size={14} className="mr-2" /> Rafraîchir
+        </Button>
+      </div>
+      {statsQuery.isLoading ? (
+        <p className="text-black/50 text-sm">Chargement...</p>
+      ) : statsQuery.data ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <TrafficStatCard
+            label="Dernières 24 heures"
+            count={statsQuery.data.last24h.count}
+            avgDurationSeconds={statsQuery.data.last24h.avgDurationSeconds}
+            conversionRate={statsQuery.data.last24h.conversionRate}
+            converted={statsQuery.data.last24h.converted}
+          />
+          <TrafficStatCard
+            label="7 derniers jours"
+            count={statsQuery.data.last7d.count}
+            avgDurationSeconds={statsQuery.data.last7d.avgDurationSeconds}
+            conversionRate={statsQuery.data.last7d.conversionRate}
+            converted={statsQuery.data.last7d.converted}
+          />
+        </div>
+      ) : (
+        <p className="text-black/50 text-sm">Impossible de charger les statistiques.</p>
+      )}
+    </div>
+  );
+}
+
 function Dashboard({ password, onLogout }: { password: string; onLogout: () => void }) {
   const leadsQuery = useListLeads({ request: { headers: { 'X-Admin-Password': password } } });
 
@@ -191,6 +260,8 @@ function Dashboard({ password, onLogout }: { password: string; onLogout: () => v
           <Button variant="outline" size="sm" onClick={onLogout}>Se déconnecter</Button>
         </div>
       </div>
+
+      <TrafficSection password={password} />
 
       {leadsQuery.isLoading ? (
         <p className="text-black/50">Chargement...</p>

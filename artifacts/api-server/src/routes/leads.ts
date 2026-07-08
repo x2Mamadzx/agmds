@@ -1,6 +1,5 @@
-import { Router, type IRouter, type Request } from "express";
+import { Router, type IRouter } from "express";
 import { desc, eq, sql } from "drizzle-orm";
-import { timingSafeEqual } from "node:crypto";
 import { db, leadsTable, leadStatuses } from "@workspace/db";
 import {
   CreateLeadBody,
@@ -8,54 +7,9 @@ import {
   UpdateLeadParams,
   DeleteLeadParams,
 } from "@workspace/api-zod";
+import { requireAdmin } from "../lib/adminAuth";
 
 const router: IRouter = Router();
-
-// Basic in-memory brute-force guard for the admin password gate: locks an IP
-// out for a short window after too many failed attempts. Adequate for a
-// single-instance dev/small-scale deployment; not distributed across replicas.
-const MAX_ATTEMPTS = 5;
-const WINDOW_MS = 60_000;
-const failedAttempts = new Map<string, { count: number; firstAttemptAt: number }>();
-
-function isRateLimited(ip: string): boolean {
-  const entry = failedAttempts.get(ip);
-  if (!entry) return false;
-  if (Date.now() - entry.firstAttemptAt > WINDOW_MS) {
-    failedAttempts.delete(ip);
-    return false;
-  }
-  return entry.count >= MAX_ATTEMPTS;
-}
-
-function recordFailedAttempt(ip: string): void {
-  const entry = failedAttempts.get(ip);
-  if (!entry || Date.now() - entry.firstAttemptAt > WINDOW_MS) {
-    failedAttempts.set(ip, { count: 1, firstAttemptAt: Date.now() });
-    return;
-  }
-  entry.count += 1;
-}
-
-function safeCompare(a: string, b: string): boolean {
-  const bufA = Buffer.from(a);
-  const bufB = Buffer.from(b);
-  if (bufA.length !== bufB.length) return false;
-  return timingSafeEqual(bufA, bufB);
-}
-
-function requireAdmin(req: Request): boolean {
-  const expected = process.env["ADMIN_PASSWORD"];
-  if (!expected) return false;
-
-  const ip = req.ip ?? "unknown";
-  if (isRateLimited(ip)) return false;
-
-  const provided = req.header("x-admin-password");
-  const ok = !!provided && safeCompare(provided, expected);
-  if (!ok) recordFailedAttempt(ip);
-  return ok;
-}
 
 router.post("/leads", async (req, res): Promise<void> => {
   const parsed = CreateLeadBody.safeParse(req.body);

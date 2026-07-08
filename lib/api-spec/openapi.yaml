@@ -12,6 +12,8 @@ tags:
     description: Health operations
   - name: leads
     description: Prospect / pipeline operations
+  - name: visits
+    description: Website traffic tracking
 paths:
   /healthz:
     get:
@@ -128,6 +130,70 @@ paths:
           description: Unauthorized
         "404":
           description: Not found
+  /visits:
+    post:
+      operationId: createVisit
+      tags: [visits]
+      summary: Start tracking a new visitor session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VisitInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Visit"
+        "400":
+          description: Invalid input
+  /visits/{sessionId}:
+    patch:
+      operationId: updateVisit
+      tags: [visits]
+      summary: Update a visitor session's time spent and/or conversion status
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VisitUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Visit"
+        "400":
+          description: Invalid input
+        "404":
+          description: Not found
+  /visits/stats:
+    get:
+      operationId: getVisitStats
+      tags: [visits]
+      summary: Traffic analytics summary (admin only)
+      security:
+        - adminPassword: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VisitStats"
+        "401":
+          description: Unauthorized
 components:
   securitySchemes:
     adminPassword:
@@ -231,3 +297,70 @@ components:
       required:
         - total
         - groups
+    Visit:
+      type: object
+      properties:
+        id:
+          type: integer
+        sessionId:
+          type: string
+        startedAt:
+          type: string
+          format: date-time
+        lastSeenAt:
+          type: string
+          format: date-time
+        durationSeconds:
+          type: integer
+        converted:
+          type: boolean
+      required:
+        - id
+        - sessionId
+        - startedAt
+        - lastSeenAt
+        - durationSeconds
+        - converted
+    VisitInput:
+      type: object
+      properties:
+        sessionId:
+          type: string
+          minLength: 1
+      required:
+        - sessionId
+    VisitUpdate:
+      type: object
+      properties:
+        durationSeconds:
+          type: integer
+          minimum: 0
+        converted:
+          type: boolean
+      minProperties: 1
+    VisitWindowStats:
+      type: object
+      properties:
+        count:
+          type: integer
+        avgDurationSeconds:
+          type: integer
+        converted:
+          type: integer
+        conversionRate:
+          type: number
+      required:
+        - count
+        - avgDurationSeconds
+        - converted
+        - conversionRate
+    VisitStats:
+      type: object
+      properties:
+        last24h:
+          $ref: "#/components/schemas/VisitWindowStats"
+        last7d:
+          $ref: "#/components/schemas/VisitWindowStats"
+      required:
+        - last24h
+        - last7d

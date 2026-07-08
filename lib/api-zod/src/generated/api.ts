@@ -114,3 +114,68 @@ export const DeleteLeadParams = zod.object({
 export const DeleteLeadResponse = zod.void()
 
 
+/**
+ * @summary Start tracking a new visitor session
+ */
+
+
+
+export const CreateVisitBody = zod.object({
+  "sessionId": zod.string().min(1)
+})
+
+export const CreateVisitResponse = zod.object({
+  "id": zod.number(),
+  "sessionId": zod.string(),
+  "startedAt": zod.coerce.date(),
+  "lastSeenAt": zod.coerce.date(),
+  "durationSeconds": zod.number(),
+  "converted": zod.boolean()
+})
+
+
+/**
+ * @summary Update a visitor session's time spent and/or conversion status
+ */
+export const UpdateVisitParams = zod.object({
+  "sessionId": zod.coerce.string()
+})
+
+export const updateVisitBodyDurationSecondsMin = 0;
+
+
+
+export const UpdateVisitBody = zod.object({
+  "durationSeconds": zod.number().min(updateVisitBodyDurationSecondsMin).optional(),
+  "converted": zod.boolean().optional()
+})
+
+export const UpdateVisitResponse = zod.object({
+  "id": zod.number(),
+  "sessionId": zod.string(),
+  "startedAt": zod.coerce.date(),
+  "lastSeenAt": zod.coerce.date(),
+  "durationSeconds": zod.number(),
+  "converted": zod.boolean()
+})
+
+
+/**
+ * @summary Traffic analytics summary (admin only)
+ */
+export const GetVisitStatsResponse = zod.object({
+  "last24h": zod.object({
+  "count": zod.number(),
+  "avgDurationSeconds": zod.number(),
+  "converted": zod.number(),
+  "conversionRate": zod.number()
+}),
+  "last7d": zod.object({
+  "count": zod.number(),
+  "avgDurationSeconds": zod.number(),
+  "converted": zod.number(),
+  "conversionRate": zod.number()
+})
+})
+
+

@@ -64,3 +64,35 @@ export interface LeadsSummary {
   groups: LeadsSummaryGroup[];
 }
 
+export interface Visit {
+  id: number;
+  sessionId: string;
+  startedAt: string;
+  lastSeenAt: string;
+  durationSeconds: number;
+  converted: boolean;
+}
+
+export interface VisitInput {
+  /** @minLength 1 */
+  sessionId: string;
+}
+
+export interface VisitUpdate {
+  /** @minimum 0 */
+  durationSeconds?: number;
+  converted?: boolean;
+}
+
+export interface VisitWindowStats {
+  count: number;
+  avgDurationSeconds: number;
+  converted: number;
+  conversionRate: number;
+}
+
+export interface VisitStats {
+  last24h: VisitWindowStats;
+  last7d: VisitWindowStats;
+}
+

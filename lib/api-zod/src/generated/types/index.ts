@@ -13,3 +13,8 @@ export * from './leadsSummary';
 export * from './leadsSummaryGroup';
 export * from './leadStatus';
 export * from './leadUpdate';
+export * from './visit';
+export * from './visitInput';
+export * from './visitStats';
+export * from './visitUpdate';
+export * from './visitWindowStats';

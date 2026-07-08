@@ -2,10 +2,80 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring, useInView, animate } from 'framer-motion';
 import { ArrowRight, BarChart3, Target, Zap, TrendingUp, Play, Camera, Users, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useCreateLead } from '@workspace/api-client-react';
+import { useCreateLead, useCreateVisit, useUpdateVisit } from '@workspace/api-client-react';
 import heroImage from '@assets/generated_images/hero-camera.jpg';
 import servicesImage from '@assets/generated_images/services-content.jpg';
 import dataImage from '@assets/generated_images/studio-production-natural.jpg';
+
+/* ─── Visit Tracking ───────────────────────────────────────────── */
+const VISIT_SESSION_KEY = 'mds_visit_session_id';
+const VISIT_LAST_SEEN_KEY = 'mds_visit_last_seen';
+const VISIT_INACTIVITY_TIMEOUT_MS = 30 * 60 * 1000; // start a new visit after 30min idle
+
+function createSessionId(): string {
+  return typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+}
+
+// Reuses the session while the tab stays active; starts a fresh session (and
+// thus a new visit row) once the visitor has been idle long enough that
+// returning should count as a new visit rather than inflating the old one.
+function getOrCreateSessionId(): string {
+  const existingId = sessionStorage.getItem(VISIT_SESSION_KEY);
+  const lastSeen = Number(sessionStorage.getItem(VISIT_LAST_SEEN_KEY) ?? 0);
+  const isStale = !existingId || !lastSeen || Date.now() - lastSeen > VISIT_INACTIVITY_TIMEOUT_MS;
+
+  const id = isStale ? createSessionId() : existingId;
+  sessionStorage.setItem(VISIT_SESSION_KEY, id);
+  sessionStorage.setItem(VISIT_LAST_SEEN_KEY, String(Date.now()));
+  return id;
+}
+
+function useVisitTracking() {
+  const sessionIdRef = useRef<string | null>(null);
+  const startRef = useRef<number>(Date.now());
+  const createVisit = useCreateVisit();
+  const updateVisit = useUpdateVisit();
+
+  useEffect(() => {
+    const sessionId = getOrCreateSessionId();
+    sessionIdRef.current = sessionId;
+    startRef.current = Date.now();
+    createVisit.mutate({ data: { sessionId } });
+
+    const sendHeartbeat = () => {
+      const id = sessionIdRef.current;
+      if (!id) return;
+      sessionStorage.setItem(VISIT_LAST_SEEN_KEY, String(Date.now()));
+      const durationSeconds = Math.round((Date.now() - startRef.current) / 1000);
+      updateVisit.mutate({ sessionId: id, data: { durationSeconds } });
+    };
+
+    const interval = window.setInterval(sendHeartbeat, 20000);
+    const handleVisibility = () => {
+      if (document.visibilityState === 'hidden') sendHeartbeat();
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+    window.addEventListener('pagehide', sendHeartbeat);
+
+    return () => {
+      window.clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibility);
+      window.removeEventListener('pagehide', sendHeartbeat);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const markConverted = () => {
+    const id = sessionIdRef.current;
+    if (!id) return;
+    const durationSeconds = Math.round((Date.now() - startRef.current) / 1000);
+    updateVisit.mutate({ sessionId: id, data: { converted: true, durationSeconds } });
+  };
+
+  return { markConverted };
+}
 
 /* ─── Animated Counter ─────────────────────────────────────────── */
 function Counter({ to, from = 0, prefix = '', suffix = '', format }: { to: number; from?: number; prefix?: string; suffix?: string; format?: (v: number) => string }) {
@@ -74,6 +144,7 @@ function TiltCard({ children, className = '' }: { children: React.ReactNode; cla
 
 /* ─── Main Component ───────────────────────────────────────────── */
 export default function Home() {
+  const { markConverted } = useVisitTracking();
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
   const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
@@ -493,7 +564,7 @@ export default function Home() {
 
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
               <motion.div variants={FADE_UP} className="lg:col-span-3">
-                <ContactForm />
+                <ContactForm onConverted={markConverted} />
               </motion.div>
               <motion.div variants={FADE_UP} className="lg:col-span-2 space-y-6 pt-2">
                 {[
@@ -530,7 +601,7 @@ export default function Home() {
 /* ─── Contact Form ─────────────────────────────────────────────── */
 const ENTREPRISES_STORAGE_KEY = 'mds_recent_entreprises';
 
-function ContactForm() {
+function ContactForm({ onConverted }: { onConverted: () => void }) {
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({ nom: '', entreprise: '', courriel: '', telephone: '', service: '', message: '' });
   const [recentEntreprises, setRecentEntreprises] = useState<string[]>([]);
@@ -565,6 +636,7 @@ function ContactForm() {
       {
         onSuccess: () => {
           setSubmitted(true);
+          onConverted();
           if (form.entreprise.trim()) {
             const updated = [form.entreprise.trim(), ...recentEntreprises.filter(e => e !== form.entreprise.trim())].slice(0, 10);
             localStorage.setItem(ENTREPRISES_STORAGE_KEY, JSON.stringify(updated));
