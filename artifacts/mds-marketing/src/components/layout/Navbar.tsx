@@ -70,24 +70,35 @@ export function Navbar() {
           </Button>
         </nav>
 
-        {/* Mobile Toggle */}
-        <motion.button
-          className="md:hidden text-black p-2"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          whileTap={{ scale: 0.9 }}
-        >
-          <AnimatePresence mode="wait">
-            {mobileMenuOpen ? (
-              <motion.div key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                <X size={28} />
-              </motion.div>
-            ) : (
-              <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                <Menu size={28} />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.button>
+        {/* Mobile: bouton Démarrer + toggle menu */}
+        <div className="md:hidden flex items-center gap-2">
+          <Button
+            onClick={() => scrollTo('contact')}
+            variant="default"
+            size="sm"
+            className="btn-shine uppercase tracking-widest text-xs relative overflow-hidden group"
+          >
+            <span className="relative z-10">Démarrer</span>
+            <span className="absolute inset-0 bg-gradient-to-r from-[#F5C842] to-[#C8922A] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          </Button>
+          <motion.button
+            className="text-black p-2"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            whileTap={{ scale: 0.9 }}
+          >
+            <AnimatePresence mode="wait">
+              {mobileMenuOpen ? (
+                <motion.div key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                  <X size={28} />
+                </motion.div>
+              ) : (
+                <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                  <Menu size={28} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
