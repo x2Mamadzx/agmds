@@ -6,6 +6,7 @@ import {
   CreateLeadBody,
   UpdateLeadBody,
   UpdateLeadParams,
+  DeleteLeadParams,
 } from "@workspace/api-zod";
 
 const router: IRouter = Router();
@@ -130,6 +131,31 @@ router.patch("/leads/:id", async (req, res): Promise<void> => {
   }
 
   res.json(lead);
+});
+
+router.delete("/leads/:id", async (req, res): Promise<void> => {
+  if (!requireAdmin(req)) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+
+  const params = DeleteLeadParams.safeParse(req.params);
+  if (!params.success) {
+    res.status(400).json({ error: params.error.message });
+    return;
+  }
+
+  const [lead] = await db
+    .delete(leadsTable)
+    .where(eq(leadsTable.id, params.data.id))
+    .returning();
+
+  if (!lead) {
+    res.status(404).json({ error: "Lead not found" });
+    return;
+  }
+
+  res.status(204).send();
 });
 
 export default router;

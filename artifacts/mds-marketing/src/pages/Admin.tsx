@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useQueryClient } from '@tanstack/react-query';
-import { Lock, RefreshCw, Users, Mail, Phone, Building2 } from 'lucide-react';
+import { Lock, RefreshCw, Users, Mail, Phone, Building2, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useListLeads, useUpdateLead, getListLeadsQueryKey, type Lead } from '@workspace/api-client-react';
+import { useListLeads, useUpdateLead, useDeleteLead, getListLeadsQueryKey, type Lead } from '@workspace/api-client-react';
 
 const SESSION_KEY = 'mds_admin_password';
 
@@ -89,6 +89,26 @@ function LeadCard({ lead, password }: { lead: Lead; password: string }) {
       },
     },
   });
+  const deleteLead = useDeleteLead({
+    request: { headers: { 'X-Admin-Password': password } },
+    mutation: {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: getListLeadsQueryKey() });
+      },
+      onError: () => {
+        window.alert(
+          `Impossible de supprimer ${lead.nom}. Le prospect a peut-être déjà été supprimé ou votre session a expiré. Rafraîchissez la page et réessayez.`
+        );
+        queryClient.invalidateQueries({ queryKey: getListLeadsQueryKey() });
+      },
+    },
+  });
+
+  const handleDelete = () => {
+    if (window.confirm(`Supprimer le prospect ${lead.nom} ? Cette action est irréversible.`)) {
+      deleteLead.mutate({ id: lead.id });
+    }
+  };
 
   return (
     <motion.div
@@ -97,13 +117,24 @@ function LeadCard({ lead, password }: { lead: Lead; password: string }) {
       animate={{ opacity: 1, y: 0 }}
       className="bg-[#161616] border border-white/10 rounded-xl p-4 space-y-3"
     >
-      <div>
-        <p className="font-semibold text-white">{lead.nom}</p>
-        {lead.entreprise && (
-          <p className="text-xs text-white/50 flex items-center gap-1 mt-0.5">
-            <Building2 size={12} /> {lead.entreprise}
-          </p>
-        )}
+      <div className="flex items-start justify-between gap-2">
+        <div>
+          <p className="font-semibold text-white">{lead.nom}</p>
+          {lead.entreprise && (
+            <p className="text-xs text-white/50 flex items-center gap-1 mt-0.5">
+              <Building2 size={12} /> {lead.entreprise}
+            </p>
+          )}
+        </div>
+        <button
+          type="button"
+          onClick={handleDelete}
+          disabled={deleteLead.isPending}
+          aria-label={`Supprimer ${lead.nom}`}
+          className="text-white/30 hover:text-red-400 transition-colors shrink-0 disabled:opacity-40"
+        >
+          <Trash2 size={14} />
+        </button>
       </div>
       <div className="space-y-1 text-xs text-white/60">
         <a href={`mailto:${lead.courriel}`} className="flex items-center gap-1.5 hover:text-primary transition-colors">

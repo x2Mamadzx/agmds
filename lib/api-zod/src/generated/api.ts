@@ -104,3 +104,13 @@ export const UpdateLeadResponse = zod.object({
 })
 
 
+/**
+ * @summary Delete a lead (admin only)
+ */
+export const DeleteLeadParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const DeleteLeadResponse = zod.void()
+
+

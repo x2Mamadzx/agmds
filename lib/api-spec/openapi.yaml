@@ -109,6 +109,25 @@ paths:
           description: Unauthorized
         "404":
           description: Not found
+    delete:
+      operationId: deleteLead
+      tags: [leads]
+      summary: Delete a lead (admin only)
+      security:
+        - adminPassword: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
 components:
   securitySchemes:
     adminPassword:
