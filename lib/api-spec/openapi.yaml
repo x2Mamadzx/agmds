@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: leads
+    description: Prospect / pipeline operations
 paths:
   /healthz:
     get:
@@ -24,7 +26,95 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /leads:
+    post:
+      operationId: createLead
+      tags: [leads]
+      summary: Submit the public contact form as a new lead
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LeadInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lead"
+        "400":
+          description: Invalid input
+    get:
+      operationId: listLeads
+      tags: [leads]
+      summary: List all leads (admin only)
+      security:
+        - adminPassword: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Lead"
+        "401":
+          description: Unauthorized
+  /leads/summary:
+    get:
+      operationId: getLeadsSummary
+      tags: [leads]
+      summary: Pipeline summary grouped by status (admin only)
+      security:
+        - adminPassword: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeadsSummary"
+        "401":
+          description: Unauthorized
+  /leads/{id}:
+    patch:
+      operationId: updateLead
+      tags: [leads]
+      summary: Update a lead's pipeline status (admin only)
+      security:
+        - adminPassword: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LeadUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lead"
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
 components:
+  securitySchemes:
+    adminPassword:
+      type: apiKey
+      in: header
+      name: X-Admin-Password
   schemas:
     HealthStatus:
       type: object
@@ -33,4 +123,90 @@ components:
           type: string
       required:
         - status
-
+    LeadStatus:
+      type: string
+      enum: [nouveau, contacte, qualifie, proposition, gagne, perdu]
+    Lead:
+      type: object
+      properties:
+        id:
+          type: integer
+        nom:
+          type: string
+        entreprise:
+          type: ["string", "null"]
+        courriel:
+          type: string
+        telephone:
+          type: ["string", "null"]
+        service:
+          type: string
+        message:
+          type: ["string", "null"]
+        status:
+          $ref: "#/components/schemas/LeadStatus"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - nom
+        - courriel
+        - service
+        - status
+        - createdAt
+        - updatedAt
+    LeadInput:
+      type: object
+      properties:
+        nom:
+          type: string
+          minLength: 1
+        entreprise:
+          type: string
+        courriel:
+          type: string
+          minLength: 1
+        telephone:
+          type: string
+        service:
+          type: string
+          minLength: 1
+        message:
+          type: string
+      required:
+        - nom
+        - courriel
+        - service
+    LeadUpdate:
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/LeadStatus"
+      required:
+        - status
+    LeadsSummaryGroup:
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/LeadStatus"
+        count:
+          type: integer
+      required:
+        - status
+        - count
+    LeadsSummary:
+      type: object
+      properties:
+        total:
+          type: integer
+        groups:
+          type: array
+          items:
+            $ref: "#/components/schemas/LeadsSummaryGroup"
+      required:
+        - total
+        - groups
