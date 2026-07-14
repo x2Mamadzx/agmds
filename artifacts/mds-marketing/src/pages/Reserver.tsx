@@ -326,7 +326,7 @@ export default function Reserver() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.6, delay: 0.3 }}
-                  className="text-sm md:text-base text-black/55 mb-12 md:mb-14"
+                  className="text-sm md:text-base text-black/55 mb-8 md:mb-14"
                 >
                   6 questions rapides. On analyse votre situation et on vous propose un plan concret — sans engagement.
                 </motion.p>
