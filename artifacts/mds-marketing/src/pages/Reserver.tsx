@@ -298,26 +298,10 @@ export default function Reserver() {
 
             {step === 'nom' && (
               <motion.div key="nom" custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit">
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  className="flex items-center gap-2 mb-3"
-                >
-                  <motion.span
-                    className="w-2 h-2 rounded-full bg-[#C8922A]"
-                    animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
-                    transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
-                  />
-                  <span className="text-[11px] font-bold tracking-[0.25em] text-[#C8922A] uppercase">
-                    Places limitées cette semaine
-                  </span>
-                </motion.div>
-
                 <motion.h1
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
                   className="text-3xl md:text-5xl font-black text-black leading-[1.02] mb-2"
                 >
                   Découvrez comment <span className="text-gradient-gold">dominer votre marché</span> en 2 minutes.
