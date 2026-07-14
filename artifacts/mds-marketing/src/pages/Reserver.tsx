@@ -111,16 +111,15 @@ export default function Reserver() {
       {/* Header — logo + progress bar */}
       <div className="relative z-10 px-6 md:px-10 pt-6 md:pt-8">
         <div className="flex items-center justify-between mb-4">
-          <Link
-            href="/"
-            className={
-              step === 'done'
-                ? 'text-sm font-black tracking-tight text-black transition-opacity'
-                : 'text-sm font-black tracking-tight text-black/25 hover:text-black/60 transition-opacity'
-            }
-          >
-            MDS <span className={step === 'done' ? 'text-gradient-gold' : ''}>MARKETING</span>
-          </Link>
+          {step === 'done' ? (
+            <Link href="/" className="text-sm font-black tracking-tight text-black transition-opacity">
+              MDS <span className="text-gradient-gold">MARKETING</span>
+            </Link>
+          ) : (
+            <Link href="/" className="text-[11px] text-black/25 hover:text-black/60 transition-opacity">
+              Aller au site
+            </Link>
+          )}
           {step !== 'done' && (
             <button onClick={goBack} disabled={stepIdx === 0} className="flex items-center gap-1.5 text-xs text-black/40 hover:text-black/70 disabled:opacity-0 disabled:pointer-events-none transition-colors">
               <ArrowLeft className="w-3.5 h-3.5" /> Retour
@@ -271,7 +270,7 @@ export default function Reserver() {
                     {createLead.isPending ? (
                       <span className="flex items-center gap-2"><Loader2 className="w-4 h-4 animate-spin" /> Envoi...</span>
                     ) : (
-                      <span className="flex items-center gap-2">Réserver mon appel <ArrowRight className="w-4 h-4" /></span>
+                      <span className="flex items-center gap-2">Continuer <ArrowRight className="w-4 h-4" /></span>
                     )}
                   </Button>
                   <span className="text-xs text-black/35">ou appuyez sur Entrée ↵</span>
@@ -279,6 +278,12 @@ export default function Reserver() {
                 {createLead.isError && (
                   <p className="text-sm text-red-500 mt-4">Une erreur est survenue. Veuillez réessayer.</p>
                 )}
+                <p className="text-[10px] text-black/25 mt-6">
+                  En cliquant sur Continuer, vous acceptez notre{' '}
+                  <Link href="/politique-de-confidentialite" className="underline hover:text-black/45">
+                    politique de confidentialité
+                  </Link>.
+                </p>
               </motion.div>
             )}
 
