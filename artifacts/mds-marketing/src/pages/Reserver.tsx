@@ -111,8 +111,15 @@ export default function Reserver() {
       {/* Header — logo + progress bar */}
       <div className="relative z-10 px-6 md:px-10 pt-6 md:pt-8">
         <div className="flex items-center justify-between mb-4">
-          <Link href="/" className="text-sm font-black tracking-tight text-black">
-            MDS <span className="text-gradient-gold">MARKETING</span>
+          <Link
+            href="/"
+            className={
+              step === 'done'
+                ? 'text-sm font-black tracking-tight text-black transition-opacity'
+                : 'text-sm font-black tracking-tight text-black/25 hover:text-black/60 transition-opacity'
+            }
+          >
+            MDS <span className={step === 'done' ? 'text-gradient-gold' : ''}>MARKETING</span>
           </Link>
           {step !== 'done' && (
             <button onClick={goBack} disabled={stepIdx === 0} className="flex items-center gap-1.5 text-xs text-black/40 hover:text-black/70 disabled:opacity-0 disabled:pointer-events-none transition-colors">
@@ -291,7 +298,11 @@ export default function Reserver() {
                   Notre équipe vous contactera au <span className="font-bold text-black">{form.telephone}</span> dans les prochaines 24 heures pour confirmer votre appel stratégique.
                 </p>
                 <Link href="/">
-                  <span className="text-sm font-bold text-[#C8922A] hover:underline cursor-pointer">Retour à l'accueil</span>
+                  <motion.span whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="inline-flex">
+                    <Button size="lg" className="px-10 h-14 text-sm font-bold uppercase tracking-widest cursor-pointer">
+                      Retour à l'accueil <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </motion.span>
                 </Link>
               </motion.div>
             )}
