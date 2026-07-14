@@ -50,34 +50,51 @@ const BUBBLE_POOL = [
   { icon: Award, text: 'Expertise reconnue' },
 ];
 
-const LEFT_TOP_BANDS = ['12%', '22%', '32%'];
-const LEFT_TOP_BANDS_2 = ['62%', '72%', '82%'];
-const RIGHT_TOP_BANDS = ['14%', '24%', '34%'];
-const RIGHT_TOP_BANDS_2 = ['60%', '70%', '80%'];
+// One zone per slot (top/middle-ish) so bubbles can land near the middle too, while staying spread out.
+const SLOT_ZONES: string[][] = [
+  ['10%', '18%', '26%'],
+  ['46%', '54%', '62%'],
+  ['12%', '20%', '28%'],
+  ['48%', '56%', '64%'],
+];
+const SLOT_SIDES: Array<'left' | 'right'> = ['left', 'left', 'right', 'right'];
+const SLOT_INTERVALS = [6500, 7200, 6900, 7600];
 
 function pickRandom<T>(arr: T[], exclude?: T): T {
   const options = exclude !== undefined ? arr.filter((v) => v !== exclude) : arr;
   return options[Math.floor(Math.random() * options.length)] ?? arr[0];
 }
 
-function useRotatingBubble(topBands: string[], intervalMs: number, seedIdx: number) {
-  const [item, setItem] = useState(() => ({
-    ...BUBBLE_POOL[seedIdx % BUBBLE_POOL.length],
-    top: topBands[seedIdx % topBands.length],
-  }));
+function useRotatingBubbles() {
+  const [items, setItems] = useState(() =>
+    SLOT_SIDES.map((side, i) => ({
+      ...BUBBLE_POOL[i % BUBBLE_POOL.length],
+      top: SLOT_ZONES[i][0],
+      side,
+    })),
+  );
+  const itemsRef = useRef(items);
+  itemsRef.current = items;
 
   useEffect(() => {
-    const id = setInterval(() => {
-      setItem((prev) => {
-        const nextEntry = pickRandom(BUBBLE_POOL, BUBBLE_POOL.find((b) => b.text === prev.text));
-        const nextTop = pickRandom(topBands, prev.top);
-        return { ...nextEntry, top: nextTop };
-      });
-    }, intervalMs);
-    return () => clearInterval(id);
-  }, [intervalMs, topBands]);
+    const timers = SLOT_SIDES.map((_, slotIdx) =>
+      setInterval(() => {
+        setItems((prev) => {
+          const others = prev.filter((_, i) => i !== slotIdx).map((b) => b.text);
+          const currentText = prev[slotIdx].text;
+          const candidates = BUBBLE_POOL.filter((b) => b.text !== currentText && !others.includes(b.text));
+          const nextEntry = candidates.length > 0 ? pickRandom(candidates) : pickRandom(BUBBLE_POOL, BUBBLE_POOL.find((b) => b.text === currentText));
+          const nextTop = pickRandom(SLOT_ZONES[slotIdx], prev[slotIdx].top);
+          const next = [...prev];
+          next[slotIdx] = { ...nextEntry, top: nextTop, side: SLOT_SIDES[slotIdx] };
+          return next;
+        });
+      }, SLOT_INTERVALS[slotIdx]),
+    );
+    return () => timers.forEach(clearInterval);
+  }, []);
 
-  return item;
+  return items;
 }
 
 export default function Reserver() {
@@ -87,10 +104,7 @@ export default function Reserver() {
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
   const createLead = useCreateLead();
 
-  const bubbleLeft1 = useRotatingBubble(LEFT_TOP_BANDS, 6500, 0);
-  const bubbleLeft2 = useRotatingBubble(LEFT_TOP_BANDS_2, 7200, 1);
-  const bubbleRight1 = useRotatingBubble(RIGHT_TOP_BANDS, 6800, 2);
-  const bubbleRight2 = useRotatingBubble(RIGHT_TOP_BANDS_2, 7500, 3);
+  const sideBubbles = useRotatingBubbles();
 
   const step = STEP_ORDER[stepIdx];
 
@@ -158,12 +172,7 @@ export default function Reserver() {
       {/* Trust/info bubbles — reassurance cues on the sides, rotate position + message, no fabricated stats */}
       {step !== 'done' && (
         <div className="hidden lg:block absolute inset-0 pointer-events-none overflow-hidden">
-          {[
-            { ...bubbleLeft1, side: 'left' as const },
-            { ...bubbleLeft2, side: 'left' as const },
-            { ...bubbleRight1, side: 'right' as const },
-            { ...bubbleRight2, side: 'right' as const },
-          ].map((bubble, i) => {
+          {sideBubbles.map((bubble, i) => {
             const Icon = bubble.icon;
             return (
               <div
