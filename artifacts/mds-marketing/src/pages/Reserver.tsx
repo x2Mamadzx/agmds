@@ -28,6 +28,20 @@ const SERVICE_OPTIONS = [
 
 const STEP_ORDER: StepId[] = ['nom', 'service', 'entreprise', 'courriel', 'telephone', 'message', 'done'];
 
+// Area codes actually in use in Québec (including overlay codes), so we only accept
+// numbers that could plausibly be a Québec landline/mobile — digits only, dashes/spaces ignored.
+const QUEBEC_AREA_CODES = ['418', '367', '438', '450', '468', '514', '579', '581', '819', '873'];
+
+function isValidQuebecPhone(raw: string): boolean {
+  const digits = raw.replace(/\D/g, '');
+  const tenDigits = digits.length === 11 && digits.startsWith('1') ? digits.slice(1) : digits;
+  if (tenDigits.length !== 10) return false;
+  const areaCode = tenDigits.slice(0, 3);
+  const exchange = tenDigits.slice(3, 4);
+  if (exchange === '0' || exchange === '1') return false; // exchange codes can't start with 0/1
+  return QUEBEC_AREA_CODES.includes(areaCode);
+}
+
 /* ─── Motion variants for slide transitions ───────────────────── */
 const slideVariants = {
   enter: (dir: number) => ({ opacity: 0, x: dir > 0 ? 40 : -40 }),
@@ -162,7 +176,7 @@ export default function Reserver() {
 
   const nomValid = form.nom.trim().length > 0;
   const courrielValid = /\S+@\S+\.\S+/.test(form.courriel);
-  const telephoneValid = form.telephone.trim().length >= 7;
+  const telephoneValid = isValidQuebecPhone(form.telephone);
 
   return (
     <div className="h-[100dvh] w-full bg-[#f2f2f2] relative overflow-hidden flex flex-col">
