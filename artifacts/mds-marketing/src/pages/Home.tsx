@@ -581,15 +581,15 @@ export default function Home() {
                     <h3 className="text-xl md:text-2xl font-black text-black leading-tight mb-6">
                       6 questions rapides. <span className="text-gradient-gold">On vous rappelle.</span>
                     </h3>
-                    <Link href="/reserver-appel" onClick={markConverted}>
+                    <Link href="/reserver-appel" onClick={markConverted} className="flex justify-center">
                       <motion.span
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.97 }}
-                        className="inline-flex"
+                        className="inline-flex w-full sm:w-auto justify-center"
                       >
-                        <Button size="lg" className="px-10 h-14 text-sm font-bold uppercase tracking-widest shadow-[0_0_30px_rgba(200,146,42,0.2)] hover:shadow-[0_0_50px_rgba(200,146,42,0.4)] transition-shadow duration-500 cursor-pointer">
+                        <Button size="lg" className="w-full sm:w-auto px-6 sm:px-10 h-14 text-xs sm:text-sm font-bold uppercase tracking-wide sm:tracking-widest shadow-[0_0_30px_rgba(200,146,42,0.2)] hover:shadow-[0_0_50px_rgba(200,146,42,0.4)] transition-shadow duration-500 cursor-pointer whitespace-nowrap">
                           Réserver mon appel gratuit
-                          <ArrowRight className="w-4 h-4 ml-2" />
+                          <ArrowRight className="w-4 h-4 ml-2 shrink-0" />
                         </Button>
                       </motion.span>
                     </Link>
