@@ -302,7 +302,7 @@ export default function Reserver() {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
-                  className="flex items-center gap-2 mb-5"
+                  className="flex items-center gap-2 mb-3"
                 >
                   <motion.span
                     className="w-2 h-2 rounded-full bg-[#C8922A]"
@@ -318,7 +318,7 @@ export default function Reserver() {
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-                  className="text-3xl md:text-5xl font-black text-black leading-[1.02] mb-3"
+                  className="text-3xl md:text-5xl font-black text-black leading-[1.02] mb-2"
                 >
                   Découvrez comment <span className="text-gradient-gold">dominer votre marché</span> en 2 minutes.
                 </motion.h1>
@@ -326,7 +326,7 @@ export default function Reserver() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.6, delay: 0.3 }}
-                  className="text-sm md:text-base text-black/55 mb-10"
+                  className="text-sm md:text-base text-black/55 mb-12 md:mb-14"
                 >
                   6 questions rapides. On analyse votre situation et on vous propose un plan concret — sans engagement.
                 </motion.p>
