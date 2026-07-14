@@ -51,10 +51,11 @@ const BUBBLE_POOL = [
 ];
 
 // One zone per slot (top/middle-ish) so bubbles can land near the middle too, while staying spread out.
+// Kept below the "Places limitées" badge height so they never float above the header content.
 const SLOT_ZONES: string[][] = [
-  ['10%', '18%', '26%'],
+  ['22%', '28%', '34%'],
   ['46%', '54%', '62%'],
-  ['12%', '20%', '28%'],
+  ['24%', '30%', '36%'],
   ['48%', '56%', '64%'],
 ];
 const SLOT_SIDES: Array<'left' | 'right'> = ['left', 'left', 'right', 'right'];
@@ -164,7 +165,7 @@ export default function Reserver() {
   const telephoneValid = form.telephone.trim().length >= 7;
 
   return (
-    <div className="min-h-[100dvh] w-full bg-[#f2f2f2] relative overflow-hidden flex flex-col">
+    <div className="h-[100dvh] w-full bg-[#f2f2f2] relative overflow-hidden flex flex-col">
       {/* ambient glow */}
       <motion.div
         className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(200,146,42,0.15)_0%,transparent_55%)]"
@@ -262,7 +263,7 @@ export default function Reserver() {
       </div>
 
       {/* Question stage */}
-      <div className="relative z-10 flex-1 flex items-center justify-center px-6 md:px-10 py-10">
+      <div className="relative z-10 flex-1 min-h-0 flex items-center justify-center px-6 md:px-10 py-6 md:py-10 overflow-y-auto">
         <div className="w-full max-w-2xl">
           <AnimatePresence mode="wait" custom={direction}>
 
