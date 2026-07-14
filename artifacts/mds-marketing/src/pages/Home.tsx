@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring, useInView, animate } from 'framer-motion';
 import { ArrowRight, BarChart3, Target, Zap, TrendingUp, Play, Camera, Users, CheckCircle2 } from 'lucide-react';
+import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
-import { useCreateLead, useCreateVisit, useUpdateVisit } from '@workspace/api-client-react';
+import { useCreateVisit, useUpdateVisit } from '@workspace/api-client-react';
 import heroImage from '@assets/generated_images/hero-camera.jpg';
 import servicesImage from '@assets/generated_images/services-content.jpg';
 import dataImage from '@assets/generated_images/studio-production-natural.jpg';
@@ -561,11 +562,10 @@ export default function Home() {
               </motion.p>
             </motion.div>
 
-            {/* ── Form (large, centré) ── */}
-            <motion.div variants={FADE_UP} className="max-w-4xl mx-auto mb-10 md:mb-12">
+            {/* ── CTA vers la page de réservation dédiée ── */}
+            <motion.div variants={FADE_UP} className="max-w-2xl mx-auto mb-10 md:mb-12">
               {/* Circulating gold light border */}
               <div className="relative rounded-2xl">
-                {/* Border only */}
                 <div className="relative p-[2px] rounded-2xl overflow-hidden">
                   <motion.div
                     className="absolute w-[200%] h-[200%] -top-1/2 -left-1/2"
@@ -575,8 +575,23 @@ export default function Home() {
                     animate={{ rotate: 360 }}
                     transition={{ duration: 3.5, repeat: Infinity, ease: 'linear' }}
                   />
-                  <div className="relative rounded-[14px] overflow-hidden bg-white">
-                    <ContactForm onConverted={markConverted} />
+                  <div className="relative rounded-[14px] overflow-hidden bg-white p-8 md:p-10 text-center">
+                    <p className="text-[10px] tracking-[0.25em] text-[#C8922A] font-bold uppercase mb-2">Appel gratuit — 15 minutes</p>
+                    <h3 className="text-xl md:text-2xl font-black text-black leading-tight mb-6">
+                      6 questions rapides. <span className="text-gradient-gold">On vous rappelle.</span>
+                    </h3>
+                    <Link href="/reserver-appel" onClick={markConverted}>
+                      <motion.span
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        className="inline-flex"
+                      >
+                        <Button size="lg" className="px-10 h-14 text-sm font-bold uppercase tracking-widest shadow-[0_0_30px_rgba(200,146,42,0.2)] hover:shadow-[0_0_50px_rgba(200,146,42,0.4)] transition-shadow duration-500 cursor-pointer">
+                          Réserver mon appel gratuit
+                          <ArrowRight className="w-4 h-4 ml-2" />
+                        </Button>
+                      </motion.span>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -607,189 +622,3 @@ export default function Home() {
   );
 }
 
-const ENTREPRISES_STORAGE_KEY = 'mds_recent_entreprises';
-
-function ContactForm({ onConverted }: { onConverted: () => void }) {
-  const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({ nom: '', entreprise: '', courriel: '', telephone: '', service: '', message: '' });
-  const [recentEntreprises, setRecentEntreprises] = useState<string[]>([]);
-  const createLead = useCreateLead();
-
-  useEffect(() => {
-    try {
-      const stored = JSON.parse(localStorage.getItem(ENTREPRISES_STORAGE_KEY) ?? '[]');
-      if (Array.isArray(stored)) setRecentEntreprises(stored);
-    } catch {
-      // ignore malformed storage
-    }
-  }, []);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    createLead.mutate(
-      {
-        data: {
-          nom: form.nom,
-          entreprise: form.entreprise || undefined,
-          courriel: form.courriel,
-          telephone: form.telephone,
-          service: form.service,
-          message: form.message || undefined,
-        },
-      },
-      {
-        onSuccess: () => {
-          setSubmitted(true);
-          onConverted();
-          if (form.entreprise.trim()) {
-            const updated = [form.entreprise.trim(), ...recentEntreprises.filter(e => e !== form.entreprise.trim())].slice(0, 10);
-            localStorage.setItem(ENTREPRISES_STORAGE_KEY, JSON.stringify(updated));
-          }
-        },
-      },
-    );
-  };
-
-  const loading = createLead.isPending;
-
-  if (submitted) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-        className="bg-card border border-black/10 rounded-2xl p-10 text-center"
-      >
-        <motion.div
-          animate={{ scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-        >
-          <CheckCircle2 className="text-primary w-16 h-16 mx-auto mb-6" />
-        </motion.div>
-        <h3 className="text-2xl font-black text-black mb-3">Message envoyé !</h3>
-        <p className="text-black/55">Notre équipe vous contactera dans les prochaines 24 heures pour confirmer votre appel stratégique.</p>
-      </motion.div>
-    );
-  }
-
-  const inputClass = [
-    "w-full bg-transparent border-b border-black/15 px-0 py-3",
-    "text-black placeholder:text-black/30 text-sm",
-    "focus:outline-none focus:border-[#C8922A] transition-colors duration-300",
-    "appearance-none",
-  ].join(' ');
-
-  const labelClass = "block text-[10px] font-bold tracking-[0.22em] text-[#C8922A] uppercase mb-1";
-
-  return (
-    <motion.form
-      onSubmit={handleSubmit}
-      className="relative bg-white rounded-2xl shadow-[0_8px_48px_rgba(0,0,0,0.10)] overflow-hidden"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-    >
-      {/* Gold accent bar top */}
-      <div className="h-1 w-full bg-gradient-to-r from-[#C8922A] via-[#F5C842] to-[#C8922A]" />
-
-      <div className="p-6 md:p-8">
-        {/* Form header */}
-        <div className="mb-5 pb-5 border-b border-black/6">
-          <h3 className="text-lg font-black text-black leading-tight">
-            Remplissez. On vous rappelle. <span className="text-gradient-gold">Simple.</span>
-          </h3>
-        </div>
-
-        <div className="space-y-5">
-          {/* Row 1 — 4 cols on lg */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-5">
-            <div>
-              <label className={labelClass}>Votre nom *</label>
-              <input name="nom" required value={form.nom} onChange={handleChange} placeholder="Jean Tremblay" className={inputClass} />
-            </div>
-            <div>
-              <label className={labelClass}>Entreprise</label>
-              <input name="entreprise" autoComplete="organization" list="entreprises-suggestions" value={form.entreprise} onChange={handleChange} placeholder="Votre entreprise inc." className={inputClass} />
-              <datalist id="entreprises-suggestions">
-                {recentEntreprises.map(e => <option key={e} value={e} />)}
-              </datalist>
-            </div>
-            <div>
-              <label className={labelClass}>Courriel *</label>
-              <input name="courriel" type="email" required value={form.courriel} onChange={handleChange} placeholder="jean@entreprise.ca" className={inputClass} />
-            </div>
-            <div>
-              <label className={labelClass}>Téléphone *</label>
-              <input name="telephone" type="tel" required value={form.telephone} onChange={handleChange} placeholder="418-000-0000" className={inputClass} />
-            </div>
-          </div>
-
-          {/* Row 2 — service + message côte à côte sur md+ */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
-            <div>
-              <label className={labelClass}>Service qui vous intéresse *</label>
-              <select name="service" required value={form.service} onChange={handleChange}
-                className={inputClass + ' cursor-pointer bg-white'}
-              >
-                <option value="" disabled>Choisissez un service</option>
-                <option value="videos">Vidéos organiques</option>
-                <option value="pub">Campagnes pub (Meta / Google / TikTok)</option>
-                <option value="reseaux">Gestion des réseaux sociaux</option>
-                <option value="contenu">Création de contenu</option>
-                <option value="strategie">Stratégie de marque</option>
-                <option value="tout">Tout — stratégie complète</option>
-              </select>
-            </div>
-            <div>
-              <label className={labelClass}>Parlez-nous de votre projet</label>
-              <textarea name="message" value={form.message} onChange={handleChange} rows={2}
-                placeholder="Vos objectifs, budget approximatif, défis actuels..."
-                className={inputClass + ' resize-none'} />
-            </div>
-          </div>
-
-          <div className="pt-2 space-y-3">
-            <motion.div whileHover={{ scale: 1.015 }} whileTap={{ scale: 0.985 }}>
-              <Button
-                type="submit"
-                size="lg"
-                className="w-full h-12 md:h-14 text-sm font-bold uppercase tracking-widest shadow-[0_0_30px_rgba(200,146,42,0.2)] hover:shadow-[0_0_50px_rgba(200,146,42,0.4)] transition-shadow duration-500"
-                disabled={loading}
-              >
-                {loading ? (
-                  <motion.span animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 1, repeat: Infinity }}>
-                    Envoi en cours...
-                  </motion.span>
-                ) : (
-                  <span className="flex items-center justify-center gap-2">
-                    Réserver mon appel gratuit
-                    <ArrowRight className="w-4 h-4" />
-                  </span>
-                )}
-              </Button>
-            </motion.div>
-
-            {/* Consent notice */}
-            <p className="text-[11px] text-black/35 text-center leading-relaxed">
-              En soumettant, vous acceptez notre{' '}
-              <a href="/politique-de-confidentialite" target="_blank" rel="noopener noreferrer"
-                className="text-black/50 underline underline-offset-2 hover:text-[#C8922A] transition-colors duration-200">
-                politique de confidentialité
-              </a>{' '}
-              et consentez à être contacté par MDS Marketing.
-            </p>
-
-            {createLead.isError && (
-              <p className="text-sm text-red-400 text-center">Une erreur est survenue. Veuillez réessayer.</p>
-            )}
-          </div>
-        </div>
-      </div>
-    </motion.form>
-  );
-}
