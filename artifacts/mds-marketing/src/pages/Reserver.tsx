@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowRight, ArrowLeft, CheckCircle2, Loader2, Users, ShieldCheck, Clock3, Star } from 'lucide-react';
+import { ArrowRight, ArrowLeft, CheckCircle2, Loader2, Users, ShieldCheck, Clock3, Star, Sparkles, TrendingUp, MessageCircle, Award } from 'lucide-react';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { useCreateLead } from '@workspace/api-client-react';
@@ -38,12 +38,59 @@ const slideVariants = {
 const QUESTION_LABEL_CLASS = "text-[11px] font-bold tracking-[0.25em] text-[#C8922A] uppercase mb-3 block";
 const INPUT_CLASS = "w-full bg-transparent border-b-2 border-black/15 px-0 py-4 text-2xl md:text-3xl text-black placeholder:text-black/25 focus:outline-none focus:border-[#C8922A] transition-colors duration-300";
 
+/* ─── Side bubbles: rotating reassurance messages, no fabricated stats ── */
+const BUBBLE_POOL = [
+  { icon: Users, text: 'Accompagnement personnalisé' },
+  { icon: ShieldCheck, text: 'Sans engagement' },
+  { icon: Clock3, text: 'Réponse rapide' },
+  { icon: Star, text: '100 % sur mesure' },
+  { icon: Sparkles, text: 'Stratégie claire, sans jargon' },
+  { icon: TrendingUp, text: 'Résultats mesurables' },
+  { icon: MessageCircle, text: 'Échange humain, pas un robot' },
+  { icon: Award, text: 'Expertise reconnue' },
+];
+
+const LEFT_TOP_BANDS = ['12%', '22%', '32%'];
+const LEFT_TOP_BANDS_2 = ['62%', '72%', '82%'];
+const RIGHT_TOP_BANDS = ['14%', '24%', '34%'];
+const RIGHT_TOP_BANDS_2 = ['60%', '70%', '80%'];
+
+function pickRandom<T>(arr: T[], exclude?: T): T {
+  const options = exclude !== undefined ? arr.filter((v) => v !== exclude) : arr;
+  return options[Math.floor(Math.random() * options.length)] ?? arr[0];
+}
+
+function useRotatingBubble(topBands: string[], intervalMs: number, seedIdx: number) {
+  const [item, setItem] = useState(() => ({
+    ...BUBBLE_POOL[seedIdx % BUBBLE_POOL.length],
+    top: topBands[seedIdx % topBands.length],
+  }));
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setItem((prev) => {
+        const nextEntry = pickRandom(BUBBLE_POOL, BUBBLE_POOL.find((b) => b.text === prev.text));
+        const nextTop = pickRandom(topBands, prev.top);
+        return { ...nextEntry, top: nextTop };
+      });
+    }, intervalMs);
+    return () => clearInterval(id);
+  }, [intervalMs, topBands]);
+
+  return item;
+}
+
 export default function Reserver() {
   const [stepIdx, setStepIdx] = useState(0);
   const [direction, setDirection] = useState(1);
   const [form, setForm] = useState<FormData>({ nom: '', entreprise: '', service: '', courriel: '', telephone: '', message: '' });
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
   const createLead = useCreateLead();
+
+  const bubbleLeft1 = useRotatingBubble(LEFT_TOP_BANDS, 6500, 0);
+  const bubbleLeft2 = useRotatingBubble(LEFT_TOP_BANDS_2, 7200, 1);
+  const bubbleRight1 = useRotatingBubble(RIGHT_TOP_BANDS, 6800, 2);
+  const bubbleRight2 = useRotatingBubble(RIGHT_TOP_BANDS_2, 7500, 3);
 
   const step = STEP_ORDER[stepIdx];
 
@@ -108,38 +155,46 @@ export default function Reserver() {
         transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
       />
 
-      {/* Trust/info bubbles — reassurance cues on the sides, fade in/out and drift; no fabricated stats */}
+      {/* Trust/info bubbles — reassurance cues on the sides, rotate position + message, no fabricated stats */}
       {step !== 'done' && (
         <div className="hidden lg:block absolute inset-0 pointer-events-none overflow-hidden">
           {[
-            { icon: Users, text: 'Accompagnement personnalisé', side: 'left' as const, top: '18%' },
-            { icon: ShieldCheck, text: 'Sans engagement', side: 'left' as const, top: '70%' },
-            { icon: Clock3, text: 'Réponse rapide', side: 'right' as const, top: '16%' },
-            { icon: Star, text: '100 % sur mesure', side: 'right' as const, top: '68%' },
+            { ...bubbleLeft1, side: 'left' as const },
+            { ...bubbleLeft2, side: 'left' as const },
+            { ...bubbleRight1, side: 'right' as const },
+            { ...bubbleRight2, side: 'right' as const },
           ].map((bubble, i) => {
             const Icon = bubble.icon;
             return (
-              <motion.div
-                key={bubble.text}
-                className={`absolute ${bubble.side === 'left' ? 'left-[3%]' : 'right-[3%]'} flex items-center gap-2 rounded-2xl bg-white/85 backdrop-blur-sm border border-[#C8922A]/15 shadow-[0_4px_16px_rgba(0,0,0,0.05)] px-3.5 py-2`}
-                style={{ top: bubble.top }}
-                initial={{ opacity: 0 }}
-                animate={{
-                  opacity: [0, 1, 1, 0],
-                  y: [10, -6, 4, 10],
-                  x: bubble.side === 'left' ? [0, 6, -3, 0] : [0, -6, 3, 0],
-                }}
-                transition={{
-                  duration: 9 + i * 1.3,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                  delay: i * 1.8,
-                  times: [0, 0.15, 0.8, 1],
-                }}
+              <div
+                key={i}
+                className={`absolute ${bubble.side === 'left' ? 'left-[3%]' : 'right-[3%]'}`}
+                style={{ top: bubble.top, transition: 'top 1.2s ease-in-out' }}
               >
-                <Icon className="w-3.5 h-3.5 text-[#C8922A] shrink-0" />
-                <span className="text-xs font-semibold text-black/60 whitespace-nowrap">{bubble.text}</span>
-              </motion.div>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={bubble.text}
+                    className="flex items-center gap-2 rounded-2xl bg-white/85 backdrop-blur-sm border border-[#C8922A]/15 shadow-[0_4px_16px_rgba(0,0,0,0.05)] px-3.5 py-2"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{
+                      opacity: 1,
+                      scale: 1,
+                      y: [0, -8, 0],
+                      x: bubble.side === 'left' ? [0, 5, 0] : [0, -5, 0],
+                    }}
+                    exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.5 } }}
+                    transition={{
+                      opacity: { duration: 0.6 },
+                      scale: { duration: 0.6 },
+                      y: { duration: 5 + i, repeat: Infinity, ease: 'easeInOut' },
+                      x: { duration: 5 + i, repeat: Infinity, ease: 'easeInOut' },
+                    }}
+                  >
+                    <Icon className="w-3.5 h-3.5 text-[#C8922A] shrink-0" />
+                    <span className="text-xs font-semibold text-black/60 whitespace-nowrap">{bubble.text}</span>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             );
           })}
         </div>
