@@ -197,11 +197,12 @@ export default function Home() {
 
             <motion.div variants={FADE_UP} className="flex flex-col sm:flex-row gap-5">
               <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-                <Button size="lg" className="group uppercase tracking-widest text-sm shadow-[0_0_40px_rgba(200,146,42,0.3)] hover:shadow-[0_0_60px_rgba(200,146,42,0.5)] transition-shadow duration-500"
-                  onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
-                  Obtenir un plan d'attaque
-                  <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1.5" />
-                </Button>
+                <Link href="/reserver-appel" onClick={markConverted}>
+                  <Button size="lg" className="group uppercase tracking-widest text-sm shadow-[0_0_40px_rgba(200,146,42,0.3)] hover:shadow-[0_0_60px_rgba(200,146,42,0.5)] transition-shadow duration-500">
+                    Obtenir un plan d'attaque
+                    <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1.5" />
+                  </Button>
+                </Link>
               </motion.div>
               <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
                 <Button size="lg" variant="outline" className="uppercase tracking-widest text-sm text-black border-black/20 backdrop-blur-sm hover:border-black/40 transition-all"

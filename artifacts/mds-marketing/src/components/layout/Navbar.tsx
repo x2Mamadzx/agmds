@@ -63,27 +63,29 @@ export function Navbar() {
               <span className="absolute -bottom-1 left-0 w-0 h-px bg-gradient-to-r from-[#C8922A] to-[#F5C842] group-hover:w-full transition-all duration-300" />
             </button>
           ))}
-          <Button
-            onClick={() => scrollTo('contact')}
-            variant="default"
-            className="btn-shine uppercase tracking-widest text-xs relative overflow-hidden group"
-          >
-            <span className="relative z-10">Démarrer</span>
-            <span className="absolute inset-0 bg-gradient-to-r from-[#F5C842] to-[#C8922A] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </Button>
+          <Link href="/reserver-appel">
+            <Button
+              variant="default"
+              className="btn-shine uppercase tracking-widest text-xs relative overflow-hidden group"
+            >
+              <span className="relative z-10">Démarrer</span>
+              <span className="absolute inset-0 bg-gradient-to-r from-[#F5C842] to-[#C8922A] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </Button>
+          </Link>
         </nav>
 
         {/* Mobile: bouton Démarrer + toggle menu */}
         <div className="md:hidden flex items-center gap-2">
-          <Button
-            onClick={() => scrollTo('contact')}
-            variant="default"
-            size="sm"
-            className="btn-shine uppercase tracking-widest text-xs relative overflow-hidden group"
-          >
-            <span className="relative z-10">Démarrer</span>
-            <span className="absolute inset-0 bg-gradient-to-r from-[#F5C842] to-[#C8922A] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </Button>
+          <Link href="/reserver-appel">
+            <Button
+              variant="default"
+              size="sm"
+              className="btn-shine uppercase tracking-widest text-xs relative overflow-hidden group"
+            >
+              <span className="relative z-10">Démarrer</span>
+              <span className="absolute inset-0 bg-gradient-to-r from-[#F5C842] to-[#C8922A] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </Button>
+          </Link>
           <motion.button
             className="text-black p-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -137,13 +139,14 @@ export function Navbar() {
                 transition={{ delay: 0.25, duration: 0.3 }}
                 className="pt-4"
               >
-                <Button
-                  onClick={() => scrollTo('contact')}
-                  variant="default"
-                  className="w-full text-base uppercase tracking-widest py-6"
-                >
-                  Démarrer un projet →
-                </Button>
+                <Link href="/reserver-appel" onClick={() => setMobileMenuOpen(false)}>
+                  <Button
+                    variant="default"
+                    className="w-full text-base uppercase tracking-widest py-6"
+                  >
+                    Démarrer un projet →
+                  </Button>
+                </Link>
               </motion.div>
             </div>
           </motion.div>
