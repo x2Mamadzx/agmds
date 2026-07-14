@@ -109,7 +109,10 @@ export default function Reserver() {
   const step = STEP_ORDER[stepIdx];
 
   useEffect(() => {
-    // autofocus the active input when it becomes a text step
+    // Autofocus on desktop only — on mobile, opening the keyboard automatically
+    // feels intrusive, so the prospect taps the field themselves when ready.
+    const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
+    if (isTouchDevice) return;
     const t = setTimeout(() => inputRef.current?.focus(), 350);
     return () => clearTimeout(t);
   }, [step]);
@@ -302,11 +305,10 @@ export default function Reserver() {
                 <h2 className="text-2xl md:text-4xl font-black text-black leading-tight mb-8">Comment vous appelez-vous ?</h2>
                 <input
                   ref={inputRef as React.RefObject<HTMLInputElement>}
-                  autoFocus
                   value={form.nom}
                   onChange={(e) => setForm(p => ({ ...p, nom: e.target.value }))}
                   onKeyDown={(e) => handleTextEnter(e, nomValid, false)}
-                  placeholder="Jean Tremblay"
+                  placeholder="Nom"
                   className={INPUT_CLASS}
                 />
                 <div className="mt-8 flex items-center gap-4">
@@ -346,11 +348,10 @@ export default function Reserver() {
                 <h2 className="text-2xl md:text-4xl font-black text-black leading-tight mb-8">Quel est le nom de votre entreprise ?</h2>
                 <input
                   ref={inputRef as React.RefObject<HTMLInputElement>}
-                  autoFocus
                   value={form.entreprise}
                   onChange={(e) => setForm(p => ({ ...p, entreprise: e.target.value }))}
                   onKeyDown={(e) => handleTextEnter(e, true, false)}
-                  placeholder="Votre entreprise inc. (optionnel)"
+                  placeholder="Entreprise (optionnel)"
                   className={INPUT_CLASS}
                 />
                 <div className="mt-8 flex items-center gap-4">
@@ -368,12 +369,11 @@ export default function Reserver() {
                 <h2 className="text-2xl md:text-4xl font-black text-black leading-tight mb-8">Quel est votre courriel ?</h2>
                 <input
                   ref={inputRef as React.RefObject<HTMLInputElement>}
-                  autoFocus
                   type="email"
                   value={form.courriel}
                   onChange={(e) => setForm(p => ({ ...p, courriel: e.target.value }))}
                   onKeyDown={(e) => handleTextEnter(e, courrielValid, false)}
-                  placeholder="jean@entreprise.ca"
+                  placeholder="Courriel"
                   className={INPUT_CLASS}
                 />
                 <div className="mt-8 flex items-center gap-4">
@@ -391,12 +391,11 @@ export default function Reserver() {
                 <h2 className="text-2xl md:text-4xl font-black text-black leading-tight mb-8">À quel numéro peut-on vous rappeler ?</h2>
                 <input
                   ref={inputRef as React.RefObject<HTMLInputElement>}
-                  autoFocus
                   type="tel"
                   value={form.telephone}
                   onChange={(e) => setForm(p => ({ ...p, telephone: e.target.value }))}
                   onKeyDown={(e) => handleTextEnter(e, telephoneValid, false)}
-                  placeholder="418-000-0000"
+                  placeholder="Téléphone"
                   className={INPUT_CLASS}
                 />
                 <div className="mt-8 flex items-center gap-4">
@@ -414,12 +413,11 @@ export default function Reserver() {
                 <h2 className="text-2xl md:text-4xl font-black text-black leading-tight mb-8">Parlez-nous de votre projet.</h2>
                 <textarea
                   ref={inputRef as React.RefObject<HTMLTextAreaElement>}
-                  autoFocus
                   rows={3}
                   value={form.message}
                   onChange={(e) => setForm(p => ({ ...p, message: e.target.value }))}
                   onKeyDown={(e) => handleTextEnter(e, true, true)}
-                  placeholder="Vos objectifs, budget approximatif, défis actuels... (optionnel)"
+                  placeholder="Message (optionnel)"
                   className={INPUT_CLASS + ' resize-none'}
                 />
                 <div className="mt-8 flex items-center gap-4">
