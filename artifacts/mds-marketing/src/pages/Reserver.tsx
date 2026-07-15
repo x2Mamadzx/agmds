@@ -23,6 +23,7 @@ const SERVICE_OPTIONS = [
   { value: 'reseaux', label: 'Gestion des réseaux sociaux' },
   { value: 'contenu', label: 'Création de contenu' },
   { value: 'strategie', label: 'Stratégie de marque' },
+  { value: 'site', label: 'Création de site web sur mesure' },
   { value: 'tout', label: 'Tout — stratégie complète' },
 ];
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring, useInView, animate } from 'framer-motion';
-import { ArrowRight, BarChart3, Target, Zap, TrendingUp, Play, Camera, Users, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, BarChart3, Target, Zap, TrendingUp, Play, Camera, Users, CheckCircle2, Globe } from 'lucide-react';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { useCreateVisit, useUpdateVisit } from '@workspace/api-client-react';
@@ -352,6 +352,7 @@ export default function Home() {
               { icon: Users, title: 'Gestion des Réseaux Sociaux', desc: 'Stratégie et animation complète pour transformer votre audience en communauté fidèle.' },
               { icon: Camera, title: 'Création de Contenu', desc: 'Direction artistique, photographie et copywriting qui élèvent la perception de votre marque.' },
               { icon: Zap, title: 'Stratégie de Marque', desc: 'Positionnement pointu et identité visuelle pour vous démarquer instantanément de la compétition.' },
+              { icon: Globe, title: 'Création de Site Web Sur Mesure', desc: 'Sites web performants et professionnels conçus pour convertir vos visiteurs en clients.' },
             ].map((service, index) => (
               <motion.div
                 key={index}
