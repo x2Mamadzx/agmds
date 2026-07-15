@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useQueryClient } from '@tanstack/react-query';
-import { Lock, RefreshCw, Users, Mail, Phone, Building2, Trash2, Activity, Clock, CheckCircle2 } from 'lucide-react';
+import { Lock, RefreshCw, Users, Mail, Phone, Building2, Trash2, Activity, Clock, CheckCircle2, X, PhoneCall, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useListLeads, useUpdateLead, useDeleteLead, useGetVisitStats, getListLeadsQueryKey, type Lead } from '@workspace/api-client-react';
 
@@ -24,6 +24,7 @@ const SERVICE_LABELS: Record<string, string> = {
   reseaux: 'Réseaux sociaux',
   contenu: 'Création de contenu',
   strategie: 'Stratégie de marque',
+  site: 'Site web sur mesure',
   tout: 'Stratégie complète',
 };
 
@@ -79,85 +80,179 @@ function LoginGate({ onAuthenticated }: { onAuthenticated: (password: string) =>
   );
 }
 
-function LeadCard({ lead, password }: { lead: Lead; password: string }) {
+function LeadModal({ lead, password, onClose }: { lead: Lead; password: string; onClose: () => void }) {
   const queryClient = useQueryClient();
   const updateLead = useUpdateLead({
     request: { headers: { 'X-Admin-Password': password } },
-    mutation: {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: getListLeadsQueryKey() });
-      },
-    },
+    mutation: { onSuccess: () => queryClient.invalidateQueries({ queryKey: getListLeadsQueryKey() }) },
   });
   const deleteLead = useDeleteLead({
     request: { headers: { 'X-Admin-Password': password } },
     mutation: {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: getListLeadsQueryKey() });
-      },
+      onSuccess: () => { queryClient.invalidateQueries({ queryKey: getListLeadsQueryKey() }); onClose(); },
       onError: () => {
-        window.alert(
-          `Impossible de supprimer ${lead.nom}. Le prospect a peut-être déjà été supprimé ou votre session a expiré. Rafraîchissez la page et réessayez.`
-        );
+        window.alert(`Impossible de supprimer ${lead.nom}. Rafraîchissez la page et réessayez.`);
         queryClient.invalidateQueries({ queryKey: getListLeadsQueryKey() });
       },
     },
   });
 
   const handleDelete = () => {
-    if (window.confirm(`Supprimer le prospect ${lead.nom} ? Cette action est irréversible.`)) {
+    if (window.confirm(`Supprimer ${lead.nom} ? Cette action est irréversible.`)) {
       deleteLead.mutate({ id: lead.id });
     }
   };
 
   return (
     <motion.div
-      layout
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-[#e9e9e9] border border-black/10 rounded-xl p-4 space-y-3"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+      onClick={onClose}
     >
-      <div className="flex items-start justify-between gap-2">
-        <div>
-          <p className="font-semibold text-black">{lead.nom}</p>
-          {lead.entreprise && (
-            <p className="text-xs text-black/50 flex items-center gap-1 mt-0.5">
-              <Building2 size={12} /> {lead.entreprise}
-            </p>
+      <motion.div
+        initial={{ opacity: 0, y: 40, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 40, scale: 0.97 }}
+        transition={{ type: 'spring', damping: 28, stiffness: 320 }}
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden"
+      >
+        {/* Header */}
+        <div className="bg-[#f5f5f5] border-b border-black/8 px-6 py-5 flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <p className="font-black text-lg text-black leading-tight truncate">{lead.nom}</p>
+            {lead.entreprise && (
+              <p className="text-sm text-black/50 flex items-center gap-1.5 mt-1 truncate">
+                <Building2 size={13} className="shrink-0" /><span className="truncate">{lead.entreprise}</span>
+              </p>
+            )}
+          </div>
+          <button onClick={onClose} className="text-black/40 hover:text-black transition-colors shrink-0 mt-0.5">
+            <X size={20} />
+          </button>
+        </div>
+
+        {/* Contact actions */}
+        <div className="px-6 py-5 space-y-3">
+          {lead.telephone && (
+            <a
+              href={`tel:${lead.telephone}`}
+              className="flex items-center gap-3 w-full bg-green-500 hover:bg-green-600 active:bg-green-700 text-white rounded-xl px-5 py-3.5 transition-colors font-semibold text-sm"
+            >
+              <PhoneCall size={18} className="shrink-0" />
+              <span className="truncate">Appeler — {lead.telephone}</span>
+            </a>
+          )}
+          <a
+            href={`mailto:${lead.courriel}`}
+            className="flex items-center gap-3 w-full bg-[#f0f0f0] hover:bg-[#e8e8e8] text-black rounded-xl px-5 py-3.5 transition-colors font-semibold text-sm"
+          >
+            <Mail size={18} className="shrink-0" />
+            <span className="truncate">{lead.courriel}</span>
+          </a>
+        </div>
+
+        {/* Details */}
+        <div className="px-6 pb-4 space-y-4 border-t border-black/8 pt-4">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-black/40">Service</span>
+            <span className="text-xs font-semibold text-black bg-primary/10 text-primary px-2.5 py-1 rounded-full truncate max-w-[60%] text-right">
+              {SERVICE_LABELS[lead.service] ?? lead.service}
+            </span>
+          </div>
+          {lead.message && (
+            <div className="space-y-1.5">
+              <p className="text-xs font-bold uppercase tracking-wider text-black/40 flex items-center gap-1.5">
+                <MessageSquare size={11} /> Message
+              </p>
+              <p className="text-sm text-black/70 leading-relaxed bg-[#f5f5f5] rounded-xl px-4 py-3 break-words">{lead.message}</p>
+            </div>
+          )}
+          <div className="space-y-1.5">
+            <p className="text-xs font-bold uppercase tracking-wider text-black/40">Statut</p>
+            <select
+              value={lead.status}
+              onChange={(e) => updateLead.mutate({ id: lead.id, data: { status: e.target.value as Lead['status'] } })}
+              className="w-full bg-[#f5f5f5] border border-black/10 rounded-xl px-4 py-2.5 text-sm text-black focus:outline-none focus:border-primary/60"
+            >
+              {STATUS_ORDER.map((s) => (
+                <option key={s} value={s}>{STATUS_LABELS[s]}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 pb-5 pt-2 flex justify-end">
+          <button
+            type="button"
+            onClick={handleDelete}
+            disabled={deleteLead.isPending}
+            className="text-xs text-red-400 hover:text-red-600 transition-colors disabled:opacity-40 flex items-center gap-1.5"
+          >
+            <Trash2 size={13} /> Supprimer ce prospect
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function LeadCard({ lead, password }: { lead: Lead; password: string }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <motion.button
+        type="button"
+        layout
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        onClick={() => setOpen(true)}
+        className="w-full text-left bg-[#e9e9e9] hover:bg-[#e2e2e2] active:bg-[#dcdcdc] border border-black/10 hover:border-primary/30 rounded-xl p-4 space-y-2.5 transition-all duration-200 group cursor-pointer"
+      >
+        {/* Nom + entreprise */}
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <p className="font-semibold text-black truncate">{lead.nom}</p>
+            {lead.entreprise && (
+              <p className="text-xs text-black/50 flex items-center gap-1 mt-0.5 truncate">
+                <Building2 size={11} className="shrink-0" /><span className="truncate">{lead.entreprise}</span>
+              </p>
+            )}
+          </div>
+          {lead.telephone && (
+            <span
+              onClick={(e) => { e.stopPropagation(); window.location.href = `tel:${lead.telephone}`; }}
+              role="button"
+              title={`Appeler ${lead.nom}`}
+              className="shrink-0 w-8 h-8 rounded-full bg-green-500 hover:bg-green-600 flex items-center justify-center text-white shadow-sm transition-colors"
+            >
+              <Phone size={14} />
+            </span>
           )}
         </div>
-        <button
-          type="button"
-          onClick={handleDelete}
-          disabled={deleteLead.isPending}
-          aria-label={`Supprimer ${lead.nom}`}
-          className="text-black/50 hover:text-red-400 transition-colors shrink-0 disabled:opacity-40"
-        >
-          <Trash2 size={14} />
-        </button>
-      </div>
-      <div className="space-y-1 text-xs text-black/60">
-        <a href={`mailto:${lead.courriel}`} className="flex items-center gap-1.5 hover:text-primary transition-colors">
-          <Mail size={12} /> {lead.courriel}
-        </a>
-        {lead.telephone && (
-          <a href={`tel:${lead.telephone}`} className="flex items-center gap-1.5 hover:text-primary transition-colors">
-            <Phone size={12} /> {lead.telephone}
-          </a>
+
+        {/* Email tronqué */}
+        <p className="text-xs text-black/50 flex items-center gap-1.5 truncate">
+          <Mail size={11} className="shrink-0" /><span className="truncate">{lead.courriel}</span>
+        </p>
+
+        {/* Service */}
+        <p className="text-xs text-black/55 uppercase tracking-wider truncate">{SERVICE_LABELS[lead.service] ?? lead.service}</p>
+
+        {/* Message preview */}
+        {lead.message && (
+          <p className="text-xs text-black/40 line-clamp-2 break-words">{lead.message}</p>
         )}
-      </div>
-      <p className="text-xs text-black/55 uppercase tracking-wider">{SERVICE_LABELS[lead.service] ?? lead.service}</p>
-      {lead.message && <p className="text-xs text-black/50 line-clamp-3">{lead.message}</p>}
-      <select
-        value={lead.status}
-        onChange={(e) => updateLead.mutate({ id: lead.id, data: { status: e.target.value as Lead['status'] } })}
-        className="w-full bg-[#f2f2f2] border border-black/10 rounded-lg px-2 py-2 text-xs text-black focus:outline-none focus:border-primary/60"
-      >
-        {STATUS_ORDER.map((status) => (
-          <option key={status} value={status}>{STATUS_LABELS[status]}</option>
-        ))}
-      </select>
-    </motion.div>
+      </motion.button>
+
+      <AnimatePresence>
+        {open && <LeadModal lead={lead} password={password} onClose={() => setOpen(false)} />}
+      </AnimatePresence>
+    </>
   );
 }
 
