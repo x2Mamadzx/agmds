@@ -80,7 +80,6 @@ export function Footer() {
           <div className="flex gap-6 mt-4 md:mt-0 items-center">
             <Link href="/politique-de-confidentialite" className="hover:text-primary transition-colors">Politique de confidentialité</Link>
             <span className="cursor-default">Termes et conditions</span>
-            <Link href="/admin" className="hover:text-primary transition-colors">Espace admin</Link>
           </div>
         </div>
       </div>
