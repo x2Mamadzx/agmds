@@ -1,17 +1,20 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Cookie } from 'lucide-react';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 
 const COOKIE_KEY = 'mds_cookie_consent';
 
 export function CookieBanner() {
   const [visible, setVisible] = useState(false);
 
+  const [location] = useLocation();
+
   useEffect(() => {
+    if (location === '/reserver-appel') return;
     const stored = localStorage.getItem(COOKIE_KEY);
     if (!stored) setVisible(true);
-  }, []);
+  }, [location]);
 
   const accept = () => {
     localStorage.setItem(COOKIE_KEY, 'accepted');
@@ -46,7 +49,7 @@ export function CookieBanner() {
                 Ce site utilise des témoins (cookies)
               </p>
               <p className="text-muted-foreground text-xs md:text-sm mt-1 leading-relaxed">
-                Nous utilisons des témoins pour améliorer votre expérience de navigation et analyser le trafic de façon anonyme.{' '}
+                Nous utilisons des témoins pour améliorer votre expérience de navigation et analyser le trafic.{' '}
                 <Link href="/politique-de-confidentialite" className="underline underline-offset-2 hover:text-foreground transition-colors">
                   En savoir plus
                 </Link>
