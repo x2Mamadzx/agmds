@@ -51,7 +51,7 @@ export default function PrivacyPolicy() {
                 <Li>Votre numéro de téléphone</Li>
                 <Li>Le nom et le secteur d'activité de votre entreprise</Li>
                 <Li>Des informations générales sur vos besoins en marketing</Li>
-                <Li>Des données de navigation anonymes durant les visites et soumissions du formulaire de contact, à des fins statistiques internes</Li>
+                <Li>Des données de navigation durant les visites et soumissions du formulaire de contact, à des fins statistiques internes (nombre de visites, nombre de soumissions — aucun cookie, aucun traçage publicitaire, aucun échange de données avec des tiers)</Li>
               </ul>
             </Section>
 
