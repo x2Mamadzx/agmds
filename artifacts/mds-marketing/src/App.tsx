@@ -7,7 +7,6 @@ import PrivacyPolicy from '@/pages/PrivacyPolicy';
 import Reserver from '@/pages/Reserver';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
-import { CookieBanner } from '@/components/layout/CookieBanner';
 
 const queryClient = new QueryClient();
 
@@ -55,7 +54,6 @@ function AppShell() {
         <Router />
       </main>
       <Footer />
-      <CookieBanner />
     </div>
   );
 }
