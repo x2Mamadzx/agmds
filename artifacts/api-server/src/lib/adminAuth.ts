@@ -7,7 +7,7 @@ import type { Request } from "express";
 // Shared across all admin-gated routes so limits apply consistently regardless
 // of which endpoint an attacker probes.
 const MAX_ATTEMPTS = 5;
-const WINDOW_MS = 60_000;
+const WINDOW_MS = 15 * 60_000; // 15 minutes — se réinitialise automatiquement
 const failedAttempts = new Map<string, { count: number; firstAttemptAt: number }>();
 
 function isRateLimited(ip: string): boolean {
