@@ -4,6 +4,7 @@ import { ArrowRight, ArrowLeft, CheckCircle2, Loader2, Users, ShieldCheck, Clock
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { useCreateLead } from '@workspace/api-client-react';
+import { useVisitTracking } from '@/hooks/useVisitTracking';
 
 /* ─── Types ────────────────────────────────────────────────────── */
 type FormData = {
@@ -152,6 +153,8 @@ export default function Reserver() {
     if (stepIdx > 0) goTo(stepIdx - 1, -1);
   };
 
+  const { markConverted } = useVisitTracking();
+
   const submit = () => {
     createLead.mutate(
       {
@@ -164,7 +167,12 @@ export default function Reserver() {
           message: form.message || undefined,
         },
       },
-      { onSuccess: () => goNext() },
+      {
+        onSuccess: () => {
+          markConverted();
+          goNext();
+        },
+      },
     );
   };
 
