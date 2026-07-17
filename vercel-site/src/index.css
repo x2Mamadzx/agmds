@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Google Fonts ─────────────────────────────────────────────────────────── */
+/* Outfit (display) + DM Sans (body) — loaded in index.html */
+
+/* ─── CSS custom properties ─────────────────────────────────────────────────── */
+:root {
+  --gold-start: #C8922A;
+  --gold-end:   #F5C842;
+  --noise-opacity: 0.035;
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+body {
+  margin: 0;
+  font-family: "DM Sans", sans-serif;
+  background: #fff;
+  color: #0a0a0a;
+  overflow-x: hidden;
+}
+
+/* ─── Typography ─────────────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Outfit", sans-serif;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Noise texture overlay ──────────────────────────────────────────────────── */
+.noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: var(--noise-opacity);
+}
+
+/* ─── Gold gradient text ─────────────────────────────────────────────────────── */
+.text-gradient-gold {
+  background: linear-gradient(135deg, var(--gold-start) 0%, var(--gold-end) 50%, var(--gold-start) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Gold gradient background ───────────────────────────────────────────────── */
+.bg-gradient-gold {
+  background: linear-gradient(135deg, var(--gold-start) 0%, var(--gold-end) 50%, var(--gold-start) 100%);
+  background-size: 200% 200%;
+}
+
+/* ─── Shine animation on buttons ─────────────────────────────────────────────── */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.25),
+    transparent
+  );
+  transform: skewX(-20deg);
+  animation: shine 2.5s ease-in-out infinite;
+}
+@keyframes shine {
+  0%   { left: -100%; }
+  60%  { left: 160%; }
+  100% { left: 160%; }
+}
+
+/* ─── Rotating gold border (CTA card) ───────────────────────────────────────── */
+.gold-border-premium {
+  position: relative;
+}
+.gold-border-premium::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(from var(--angle), #C8922A, #F5C842, #C8922A, #F5C842, #C8922A);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: spin-border 4s linear infinite;
+}
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes spin-border {
+  to { --angle: 360deg; }
+}
+
+/* ─── Tilt card on hover ─────────────────────────────────────────────────────── */
+.tilt-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+}
+.tilt-card:hover {
+  transform: perspective(800px) rotateX(-3deg) rotateY(3deg) translateY(-4px);
+  box-shadow: 8px 16px 40px rgba(0,0,0,0.12);
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(200,146,42,0.35); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(200,146,42,0.6); }
+
+/* ─── Selection ─────────────────────────────────────────────────────────────── */
+::selection { background: rgba(200,146,42,0.2); color: #0a0a0a; }
