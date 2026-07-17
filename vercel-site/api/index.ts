@@ -372,7 +372,7 @@ app.get("/api/visits/stats", async (req: Request, res: Response): Promise<void> 
 // ─── Serve frontend (Vite build output) ──────────────────────────────────────
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const distPath = path.join(__dirname, "../dist");
+const distPath = path.join(__dirname, "dist");
 
 app.use(express.static(distPath));
 
