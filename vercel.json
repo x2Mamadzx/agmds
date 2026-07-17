@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm --filter @workspace/mds-marketing run build && pnpm --filter @workspace/api-server run build",
+  "buildCommand": "pnpm --filter @workspace/mds-marketing run build",
   "outputDirectory": "artifacts/mds-marketing/dist/public",
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/index" },
