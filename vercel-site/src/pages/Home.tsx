@@ -90,19 +90,19 @@ export default function Home() {
             <div className="overflow-hidden mb-1">
               <motion.h1
                 variants={{ hidden: { y: '110%' }, visible: { y: 0, transition: { duration: 1, ease: [0.22, 1, 0.36, 1] } } }}
-                className="text-5xl md:text-7xl font-black leading-[0.9] text-black"
+                className="text-7xl md:text-9xl font-black leading-[0.88] text-black"
               >DOMINEZ</motion.h1>
             </div>
             <div className="overflow-hidden mb-1">
               <motion.h1
                 variants={{ hidden: { y: '110%' }, visible: { y: 0, transition: { duration: 1, delay: 0.08, ease: [0.22, 1, 0.36, 1] } } }}
-                className="text-5xl md:text-7xl font-black leading-[0.9] text-gradient-gold"
+                className="text-7xl md:text-9xl font-black leading-[0.88] text-gradient-gold"
               >VOTRE</motion.h1>
             </div>
-            <div className="overflow-hidden mb-7">
+            <div className="overflow-hidden mb-8">
               <motion.h1
                 variants={{ hidden: { y: '110%' }, visible: { y: 0, transition: { duration: 1, delay: 0.16, ease: [0.22, 1, 0.36, 1] } } }}
-                className="text-5xl md:text-7xl font-black leading-[0.9] text-gradient-gold"
+                className="text-7xl md:text-9xl font-black leading-[0.88] text-gradient-gold"
               >MARCHÉ.</motion.h1>
             </div>
 
