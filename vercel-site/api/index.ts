@@ -1,6 +1,6 @@
 /**
  * MDS Marketing — Express API
- * Deployed as a Vercel Serverless Function at /api/*
+ * Deployed as a Render Web Service (Express serves frontend + API)
  *
  * Tables required (run once against your DATABASE_URL):
  *   CREATE EXTENSION IF NOT EXISTS "pgcrypto";
@@ -33,6 +33,8 @@ import express, {
 } from "express";
 import cors from "cors";
 import helmet from "helmet";
+import { fileURLToPath } from "url";
+import path from "path";
 import { rateLimit } from "express-rate-limit";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
@@ -54,7 +56,7 @@ const pool = new Pool({
   ssl: process.env.DATABASE_URL?.includes("localhost")
     ? false
     : { rejectUnauthorized: false },
-  max: 2, // Keep pool small for serverless
+  max: 5,
   idleTimeoutMillis: 10_000,
   connectionTimeoutMillis: 5_000,
 });
@@ -332,6 +334,18 @@ app.get("/api/visits/stats", async (req: Request, res: Response): Promise<void> 
   res.json({ last24h, last7d });
 });
 
+// ─── Serve frontend (Vite build output) ──────────────────────────────────────
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const distPath = path.join(__dirname, "../dist");
+
+app.use(express.static(distPath));
+
+// SPA fallback — all non-API routes serve index.html
+app.get("*", (_req: Request, res: Response) => {
+  res.sendFile(path.join(distPath, "index.html"));
+});
+
 // ─── Global error handler ─────────────────────────────────────────────────────
 
 app.use(
@@ -350,4 +364,9 @@ app.use(
   }
 );
 
-export default app;
+// ─── Start server ─────────────────────────────────────────────────────────────
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`[MDS] Server running on port ${PORT}`);
+});
