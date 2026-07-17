@@ -63,6 +63,42 @@ const pool = new Pool({
 
 const db = drizzle(pool);
 
+// ─── Auto-migrate (crée les tables si elles n'existent pas) ──────────────────
+
+async function migrate() {
+  const client = await pool.connect();
+  try {
+    await client.query(`
+      CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+      CREATE TABLE IF NOT EXISTS leads (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        nom TEXT NOT NULL,
+        entreprise TEXT,
+        courriel TEXT NOT NULL,
+        telephone TEXT NOT NULL,
+        service TEXT NOT NULL,
+        message TEXT,
+        status TEXT NOT NULL DEFAULT 'nouveau',
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      );
+      CREATE TABLE IF NOT EXISTS visits (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        session_id TEXT NOT NULL UNIQUE,
+        started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        last_seen_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        duration_seconds INTEGER NOT NULL DEFAULT 0,
+        converted BOOLEAN NOT NULL DEFAULT FALSE
+      );
+    `);
+    console.log("[MDS] Tables OK");
+  } catch (err) {
+    console.error("[MDS] Migration failed:", err);
+  } finally {
+    client.release();
+  }
+}
+
 // ─── Schema ──────────────────────────────────────────────────────────────────
 
 const leadsTable = pgTable("leads", {
@@ -367,6 +403,8 @@ app.use(
 // ─── Start server ─────────────────────────────────────────────────────────────
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`[MDS] Server running on port ${PORT}`);
+migrate().then(() => {
+  app.listen(PORT, () => {
+    console.log(`[MDS] Server running on port ${PORT}`);
+  });
 });
