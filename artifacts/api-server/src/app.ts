@@ -29,8 +29,9 @@ app.use(
 const ALLOWED_ORIGINS = [
   "https://agmds.com",
   "https://agence-e-site.replit.app",
-  // Dev preview domains
+  // Dev / preview domains
   /^https:\/\/[a-zA-Z0-9.-]+\.replit\.dev$/,
+  /^https:\/\/[a-zA-Z0-9-]+\.vercel\.app$/,
 ];
 
 app.use(
