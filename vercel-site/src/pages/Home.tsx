@@ -87,17 +87,23 @@ export default function Home() {
               <span className="text-sm font-semibold tracking-[0.25em] text-black/60 uppercase">L'agence de croissance #1 au Québec</span>
             </motion.div>
 
-            <div className="overflow-hidden mb-4">
+            <div className="overflow-hidden mb-1">
               <motion.h1
                 variants={{ hidden: { y: '110%' }, visible: { y: 0, transition: { duration: 1, ease: [0.22, 1, 0.36, 1] } } }}
-                className="text-6xl md:text-8xl font-black leading-[0.88] text-black"
+                className="text-5xl md:text-7xl font-black leading-[0.9] text-black"
               >DOMINEZ</motion.h1>
             </div>
-            <div className="overflow-hidden mb-8">
+            <div className="overflow-hidden mb-1">
               <motion.h1
-                variants={{ hidden: { y: '110%' }, visible: { y: 0, transition: { duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] } } }}
-                className="text-6xl md:text-8xl font-black leading-[0.88] text-gradient-gold"
-              >VOTRE MARCHÉ.</motion.h1>
+                variants={{ hidden: { y: '110%' }, visible: { y: 0, transition: { duration: 1, delay: 0.08, ease: [0.22, 1, 0.36, 1] } } }}
+                className="text-5xl md:text-7xl font-black leading-[0.9] text-gradient-gold"
+              >VOTRE</motion.h1>
+            </div>
+            <div className="overflow-hidden mb-7">
+              <motion.h1
+                variants={{ hidden: { y: '110%' }, visible: { y: 0, transition: { duration: 1, delay: 0.16, ease: [0.22, 1, 0.36, 1] } } }}
+                className="text-5xl md:text-7xl font-black leading-[0.9] text-gradient-gold"
+              >MARCHÉ.</motion.h1>
             </div>
 
             <motion.p variants={FADE_UP} className="text-lg md:text-xl text-black/55 font-light max-w-2xl mb-8 leading-relaxed">

@@ -131,7 +131,6 @@ export function Footer() {
               Politique de confidentialité
             </Link>
             <span className="cursor-default">Termes et conditions</span>
-            <Link href="/admin" className="text-black/20 hover:text-primary transition-colors text-xs">Admin</Link>
           </div>
         </div>
       </div>
