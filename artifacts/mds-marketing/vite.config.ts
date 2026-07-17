@@ -3,8 +3,6 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 
-import runtimeErrorOverlay from '@replit/vite-plugin-runtime-error-modal';
-
 // PORT and BASE_PATH are required for the Replit dev server.
 // During a production build (e.g. Vercel), they are optional and fall back to
 // sensible defaults — vite build does not start a server, so PORT is unused.
@@ -12,24 +10,28 @@ const rawPort = process.env.PORT ?? '5173';
 const port = Number(rawPort);
 
 const basePath = process.env.BASE_PATH ?? '/';
+const isReplit = process.env.REPL_ID !== undefined;
 
 export default defineConfig({
   base: basePath,
   plugins: [
     react(),
     tailwindcss(),
-    runtimeErrorOverlay(),
-    ...(process.env.NODE_ENV !== 'production' &&
-    process.env.REPL_ID !== undefined
+    ...(isReplit
       ? [
-          await import('@replit/vite-plugin-cartographer').then((m) =>
-            m.cartographer({
-              root: path.resolve(import.meta.dirname, '..'),
-            }),
-          ),
-          await import('@replit/vite-plugin-dev-banner').then((m) =>
-            m.devBanner(),
-          ),
+          (await import('@replit/vite-plugin-runtime-error-modal')).default(),
+          ...(process.env.NODE_ENV !== 'production'
+            ? [
+                await import('@replit/vite-plugin-cartographer').then((m) =>
+                  m.cartographer({
+                    root: path.resolve(import.meta.dirname, '..'),
+                  }),
+                ),
+                await import('@replit/vite-plugin-dev-banner').then((m) =>
+                  m.devBanner(),
+                ),
+              ]
+            : []),
         ]
       : []),
   ],
