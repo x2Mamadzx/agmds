@@ -28,10 +28,9 @@ app.use(
 // ─── CORS — only allow requests from your own domain ────────────────────────
 const ALLOWED_ORIGINS = [
   "https://agmds.com",
-  "https://agence-e-site.replit.app",
-  // Dev / preview domains
+  // Replit dev + production domains
   /^https:\/\/[a-zA-Z0-9.-]+\.replit\.dev$/,
-  /^https:\/\/[a-zA-Z0-9-]+\.vercel\.app$/,
+  /^https:\/\/[a-zA-Z0-9.-]+\.replit\.app$/,
 ];
 
 app.use(
